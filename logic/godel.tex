@@ -1,0 +1,311 @@
+\documentclass[10pt]{article}
+\input{header.tex}
+
+\begin{document}
+\section{Введение: логические системы}
+Логическая система состоит из языка (формул), аксиом и правил вывода (синтаксис), а также семантики (интерпретации). 
+
+\textbf{Непротиворечивость:} теория $\Gamma$ непротиворечива, если не существует формулы $\alpha$ такой, что $\Gamma \vdash \alpha$ и $\Gamma \vdash \neg\alpha$. Иными словами, из $\Gamma$ нельзя вывести противоречие.
+
+\textbf{Полнота:}
+\begin{itemize}
+  \item \textit{Синтаксическая полнота:} для любой замкнутой формулы $\alpha$ либо $\Gamma\vdash\alpha$, либо $\Gamma\vdash\neg\alpha$.
+  \item \textit{Семантическая полнота:} если $\alpha$ общезначима ($\models\alpha$), то $\vdash\alpha$ (все истинные формулы доказуемы).
+\end{itemize}
+Теоремы о полноте устанавливают связь между синтаксисом и семантикой.
+
+\section{Исчисление высказываний}
+\subsection{Аксиоматика и правила}
+Язык: пропозициональные переменные, связки $\neg,\rightarrow,\land,\lor$ (последние две могут быть введены как сокращения, но в классической формулировке часто включаются явно). 
+
+Аксиомы (схемы):
+\begin{enumerate}
+  \item $A \rightarrow (B \rightarrow A)$
+  \item $(A \rightarrow (B \rightarrow C)) \rightarrow ((A \rightarrow B) \rightarrow (A \rightarrow C))$
+  \item $(\neg B \rightarrow \neg A) \rightarrow (A \rightarrow B)$
+  \item $A \land B \rightarrow A$
+  \item $A \land B \rightarrow B$
+  \item $A \rightarrow (B \rightarrow (A \land B))$
+  \item $A \rightarrow A \lor B$
+  \item $B \rightarrow A \lor B$
+  \item $(A \rightarrow C) \rightarrow ((B \rightarrow C) \rightarrow ((A \lor B) \rightarrow C))$
+  \item $\neg \neg A \rightarrow A$
+\end{enumerate}
+Правило вывода: Modus Ponens (MP): из $\alpha$ и $\alpha\rightarrow\beta$ выводим $\beta$.
+
+Доказуемость $\vdash\alpha$ означает существование вывода из аксиом.
+
+\subsection{Теорема о дедукции}
+\textbf{Теорема (о дедукции).} Для любых $\Gamma$, $\alpha$, $\beta$:
+\[
+\Gamma,\alpha\vdash\beta \quad\Longleftrightarrow\quad \Gamma\vdash\alpha\rightarrow\beta.
+\]
+\emph{Доказательство.}
+\begin{itemize}
+  \item[($\Rightarrow$)] Если $\Gamma\vdash\alpha\rightarrow\beta$, то добавляя $\alpha$ в гипотезы и применяя MP, получаем $\Gamma,\alpha\vdash\beta$.
+  \item[($\Leftarrow$)] Пусть $\Gamma,\alpha\vdash\beta$. Построим вывод $\Gamma\vdash\alpha\rightarrow\beta$ индукцией по длине вывода $\beta$.
+    \begin{itemize}
+      \item \textbf{База:} $\beta$ — аксиома или гипотеза из $\Gamma$. Тогда $\Gamma\vdash\beta$, а по аксиоме 1 $\vdash\beta\rightarrow(\alpha\rightarrow\beta)$, откуда $\Gamma\vdash\alpha\rightarrow\beta$.
+      \item \textbf{Случай $\beta\equiv\alpha$:} требуется $\Gamma\vdash\alpha\rightarrow\alpha$, что доказывается с помощью аксиом 1 и 2.
+      \item \textbf{Переход (MP):} $\beta$ получено из $\gamma$ и $\gamma\rightarrow\beta$. По индукции $\Gamma\vdash\alpha\rightarrow\gamma$ и $\Gamma\vdash\alpha\rightarrow(\gamma\rightarrow\beta)$. Используя аксиому 2, получаем $\Gamma\vdash\alpha\rightarrow\beta$.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Корректность}
+\textbf{Теорема (корректность).} Если $\vdash\alpha$, то $\models\alpha$ (т.е. $\alpha$ — тавтология).
+Доказательство: индукцией по длине вывода; аксиомы являются тавтологиями, MP сохраняет истинность.
+
+\subsection{Полнота}
+Для доказательства полноты введём вспомогательное понятие.
+
+\textbf{Определение (условное отрицание).} Пусть задана оценка $E$ пропозициональных переменных. Для формулы $\alpha$ определим
+\[
+\llparenthesis\alpha\rrparenthesis^E = 
+\begin{cases}
+\alpha, & \text{если } \llbracket\alpha\rrbracket_E = \text{И},\\
+\neg\alpha, & \text{если } \llbracket\alpha\rrbracket_E = \text{Л}.
+\end{cases}
+\]
+Если $\Gamma = \{\gamma_1,\dots,\gamma_n\}$, то $\llparenthesis\Gamma\rrparenthesis^E = \{\llparenthesis\gamma_1\rrparenthesis^E,\dots,\llparenthesis\gamma_n\rrparenthesis^E\}$.
+
+\textbf{Лемма 1 (о связках).} Для каждой бинарной связки $\star$ (и для отрицания) выполняется:
+\[
+\llparenthesis\varphi\rrparenthesis,\llparenthesis\psi\rrparenthesis \vdash \llparenthesis\varphi\star\psi\rrparenthesis,
+\]
+Всего таких утверждений 14 (по числу строк таблиц истинности~--- 4 комбинации на каждую бинарную связку, и ещё две на отрицание). Они доказываются непосредственным построением вывода (например, для $\varphi\rightarrow\psi$ в каждой из четырёх комбинаций истинности).
+
+\textbf{Лемма 2 (условное отрицание формулы).} Пусть $\Xi = \{X_1,\dots,X_n\}$ — все пропозициональные переменные, входящие в $\alpha$. Тогда для любой оценки $E$:
+\[
+\llparenthesis\Xi\rrparenthesis^E \vdash \llparenthesis\alpha\rrparenthesis^E.
+\]
+\emph{Доказательство.} Индукцией по построению $\alpha$:
+\begin{itemize}
+  \item \textit{База:} $\alpha = X_i$. Тогда $\llparenthesis\Xi\rrparenthesis$ содержит $X_i$ или $\neg X_i$, что и требуется.
+  \item \textit{Шаг:} $\alpha = \varphi\star\psi$. По индукции $\llparenthesis\Xi\rrparenthesis \vdash \llparenthesis\varphi\rrparenthesis$ и $\llparenthesis\Xi\rrparenthesis \vdash \llparenthesis\psi\rrparenthesis$. Применяя лемму о связках, получаем $\llparenthesis\Xi\rrparenthesis \vdash \llparenthesis\varphi\star\psi\rrparenthesis$.
+\end{itemize}
+
+\textbf{Лемма 3 (исключение допущения).} Если $\Gamma,\alpha\vdash\beta$ и $\Gamma,\neg\alpha\vdash\beta$, то $\Gamma\vdash\beta$.
+\emph{Доказательство.} Используя теорему о дедукции, из $\Gamma,\alpha\vdash\beta$ получаем $\Gamma\vdash\alpha\rightarrow\beta$, из $\Gamma,\neg\alpha\vdash\beta$ получаем $\Gamma\vdash\neg\alpha\rightarrow\beta$. Из этих двух импликаций и закона исключённого третьего (выводимого из аксиом 3 и 10) выводим $\Gamma\vdash\beta$.
+
+\textbf{Теорема (полнота исчисления высказываний).} Если $\models\alpha$, то $\vdash\alpha$.
+
+\emph{Доказательство.}
+\begin{enumerate}
+  \item Пусть $\alpha$ — тавтология, и пусть $\Xi = \{X_1,\dots,X_n\}$ — все её переменные. Для каждой оценки $E$ по лемме 2 имеем $\llparenthesis\Xi\rrparenthesis^E \vdash \alpha$ (так как $\llparenthesis\alpha\rrparenthesis^E = \alpha$ в силу тавтологичности).
+  \item Применим лемму об исключении допущения $n$ раз, последовательно избавляясь от $\llparenthesis X_i\rrparenthesis$. На каждом шаге рассматриваем пару выводов: один с $X_i$, другой с $\neg X_i$, оба дают $\alpha$ с оставшимися гипотезами. После $n$ шагов получаем $\vdash\alpha$.
+\end{enumerate}
+Таким образом, всякая тавтология доказуема.
+
+\section{Исчисление предикатов первого порядка}
+\subsection{Синтаксис и аксиомы}
+Язык содержит предметные переменные, функциональные символы (включая константы), предикатные символы (включая $=$), логические связки $\neg,\rightarrow$, кванторы $\forall,\exists$.
+Термы строятся из переменных и функций, формулы — из атомов (предикатов от термов) с помощью связок и кванторов.
+
+Аксиомы включают все схемы аксиом исчисления высказываний (1–10), а также две новые схемы (здесь $\theta$ свободен для подстановки):
+\begin{align}
+  &(\forall x.\varphi) \rightarrow \varphi[x:=\theta] \tag{11}\\
+  &\varphi[x:=\theta] \rightarrow \exists x.\varphi \tag{12}
+\end{align}
+Правила вывода: MP и два правила для кванторов:
+\[
+\infer{\varphi\rightarrow\forall x.\psi}{\varphi\rightarrow\psi}\quad (x\notin FV(\varphi)),\qquad
+\infer{(\exists x.\psi)\rightarrow\varphi}{\psi\rightarrow\varphi}\quad (x\notin FV(\varphi)).
+\]
+
+\subsection{Корректность}
+\textbf{Теорема (корректность).} Если $\Gamma\vdash\alpha$ и в доказательстве не используются кванторы по свободным переменным из $\Gamma$, то $\Gamma\models\alpha$ (т.е. в любой модели, где все $\gamma\in\Gamma$ истинны, $\alpha$ истинна). В частности, если $\vdash\alpha$, то $\alpha$ общезначима.
+
+Доказательство индукцией по длине вывода; аксиомы (11) и (12) общезначимы, правила сохраняют общезначимость при выполнении условий на свободные переменные.
+
+\subsection{Полнота (теорема Гёделя о полноте)}
+\textbf{Теорема (Гёдель, 1930).} Если множество замкнутых формул $\Gamma$ непротиворечиво, то оно имеет модель.
+Следствие (полнота): если $\models\alpha$, то $\vdash\alpha$ (достаточно взять $\Gamma=\{\neg\alpha\}$; если $\neg\alpha$ непротиворечиво, то имеет модель, что противоречит общезначимости $\alpha$).
+\emph{Схема доказательства.}
+\begin{enumerate}
+  \item \textbf{Предварённая форма.} Любая формула эквивалентна (в смысле доказуемой эквивалентности) формуле с поверхностными кванторами (все кванторы в начале). Будем рассматривать только такие формулы.
+  \item \textbf{Расширение языка и константы.} Пусть $\Gamma$ — непротиворечивое множество замкнутых формул. Добавим счётное множество новых констант. Построим последовательность $\Gamma_0=\Gamma$, $\Gamma_{n+1}$ добавляя для каждой экзистенциальной формулы $\exists x.\varphi$ из $\Gamma_n$ формулу $\varphi[x:=c]$ с новой константой $c$ (свидетели), а также для универсальных формул $\forall x.\varphi$ добавляем все $\varphi[x:=\theta]$ для всех замкнутых термов, построенных из имеющихся констант. Получим $\Gamma^* = \bigcup\Gamma_n$. 
+  \item \textbf{Непротиворечивость $\Gamma^*$} доказывается с помощью индукции (каждое $\Gamma_n$ непротиворечиво) и леммы об устранении посылки: если добавление новой аксиомы приводит к противоречию, то исходное множество уже противоречиво. Непротиворечивость самой $\Gamma^*$ следует из непротиворечивости каждого $\Gamma_n$ и конечности длины доказательства.
+  \item \textbf{Построение полного непротиворечивого множества бескванторных замкнутых формул.} $\Gamma^*$ преобразуем в $\Gamma^\Delta$ путём откидывания формул с кванторами, расширяем до полного непротиворечивого множества бескванторных замкнутых формул путём перебора всего счётного количества формул и добавления либо $\varphi_i$, либо $\neg\varphi_i$~--- не могут быть противоречивы с $\Gamma^\Delta_{i-1}$ оба сразу.
+  \item \textbf{Построение модели.} Носитель $D$ — все записи из функциональных символов. Интерпретируем функциональные символы формально: $f(t_1,\dots,t_n)$ даёт терм $f(t_1,\dots,t_n)$. Для предикатов полагаем $P(t_1,\dots,t_n)$ истинным тогда и только тогда, когда $P(t_1,\dots,t_n)\in\Gamma^\Delta$. Эта модель удовлетворяет всем формулам из $\Gamma^\Delta$. Благодаря максимальности $\Gamma^\Delta$ и наличию свидетелей, значит, и всем формулам из $\Gamma$.
+\end{enumerate}
+Таким образом, любое непротиворечивое множество имеет модель, и исчисление предикатов полно.
+
+\section{Теоремы Гёделя о неполноте}
+\subsection{Формальная арифметика}
+Формальная арифметика (обозначается $\mathsf{PA}$) — это теория первого порядка с равенством на языке $\{0,',+,\cdot\}$. Её нелогические аксиомы:
+\begin{align}
+\text{(A1)}&\quad a = b \to a = c \to b = c &\text{(A5)}&\quad a+0 = a\\
+\text{(A2)}&\quad a = b \to a' = b' &\text{(A6)}&\quad a+b' = (a+b)'\\
+\text{(A3)}&\quad a' = b' \to a = b &\text{(A7)}&\quad a\cdot 0 = 0\\
+\text{(A4)}&\quad \neg a' = 0 &\text{(A8)}&\quad a\cdot b' = a\cdot b + a
+\end{align}
+и схема аксиом индукции:
+\[
+(\varphi(0) \land \forall x\,(\varphi(x)\to\varphi(x')))\to\forall x\,\varphi(x),
+\]
+где $\varphi$ — любая формула языка.
+
+\subsection{Рекурсивные функции и арифметизация}
+Для кодирования синтаксиса внутри арифметики вводятся примитивно-рекурсивные и общерекурсивные функции.
+
+\subsubsection{Примитивно-рекурсивные функции}
+Базисные функции:
+\begin{itemize}
+  \item $Z(x)=0$ (константа ноль);
+  \item $N(x)=x+1$ (следование);
+  \item $U^n_k(x_1,\dots,x_n)=x_k$ (проекция).
+\end{itemize}
+Операции:
+\begin{itemize}
+  \item \textbf{Подстановка:} $S\langle g,h_1,\dots,h_m\rangle(\vec{x}) = g(h_1(\vec{x}),\dots,h_m(\vec{x}))$.
+  \item \textbf{Примитивная рекурсия:} если $f(\vec{x})$ и $g(\vec{x},y,z)$ заданы, то
+  \[
+  R\langle f,g\rangle(\vec{x},0)=f(\vec{x}),\qquad R\langle f,g\rangle(\vec{x},y+1)=g(\vec{x},y,R\langle f,g\rangle(\vec{x},y)).
+  \]
+\end{itemize}
+Функция называется \emph{примитивно-рекурсивной}, если может быть получена из базисных конечным числом подстановок и примитивных рекурсий.
+
+Примеры: сложение $x+y$ и умножение $x\cdot y$ примитивно-рекурсивны.
+
+\subsubsection{Общерекурсивные функции}
+Добавляется оператор минимизации ($\mu$-оператор):
+\[
+M\langle f\rangle(\vec{x}) = \mu y\,[f(\vec{x},y)=0] = \text{наименьшее } y\text{ такое, что } f(\vec{x},y)=0,
+\]
+если такое $y$ существует; иначе функция не определена. Функция называется \emph{частично-рекурсивной}, если может быть получена из примитивно-рекурсивных с помощью подстановки, примитивной рекурсии и минимизации. \emph{Общерекурсивная} — всюду определённая частично-рекурсивная.
+
+Тезис Чёрча: класс общерекурсивных функций совпадает с классом эффективно вычислимых функций.
+
+\subsubsection{$\beta$-функция Гёделя}
+Для кодирования конечных последовательностей чисел используется $\beta$-функция:
+\[
+\beta(b,c,i) = b \bmod (1 + (i+1)\cdot c).
+\]
+\textbf{Свойство.} Для любой конечной последовательности $a_0,\dots,a_n$ существуют $b,c$ такие, что $\beta(b,c,i)=a_i$ для всех $i\le n$.
+
+Доказательство использует китайскую теорему об остатках. Выбирая $c$ как факториал достаточно большого числа, обеспечиваем попарную взаимную простоту модулей $u_i=1+(i+1)c$, и затем находим $b$ по системе сравнений $b\equiv a_i\pmod{u_i}$.
+
+\subsection{Представимость рекурсивных функций в $\mathsf{PA}$}
+Формула $\varphi(x_1,\dots,x_n,y)$ \emph{представляет} функцию $f$ в $\mathsf{PA}$, если для любых натуральных $a_1,\dots,a_n,b$:
+\begin{enumerate}
+  \item $f(a_1,\dots,a_n)=b \;\Rightarrow\; \mathsf{PA}\vdash \varphi(\overline{a_1},\dots,\overline{a_n},\overline{b})$;
+  \item $f(a_1,\dots,a_n)\neq b \;\Rightarrow\; \mathsf{PA}\vdash \neg\varphi(\overline{a_1},\dots,\overline{a_n},\overline{b})$;
+  \item $\mathsf{PA}\vdash \exists! y\,\varphi(\overline{a_1},\dots,\overline{a_n},y)$.
+\end{enumerate}
+
+\textbf{Теорема.} Все рекурсивные функции представимы в $\mathsf{PA}$.
+
+Доказательство проводится индукцией по построению рекурсивной функции:
+\begin{itemize}
+  \item \textbf{Базис:} $Z$, $N$, $U^n_k$ представимы очевидными формулами.
+  \item \textbf{Подстановка:} если $f(\vec{z})$ и $g_i(\vec{x})$ представимы ($\psi_f$ и $\psi_{g_i}$), то представима и $S\langle f,g_1,\dots,g_k\rangle$ с помощью формулы ($y$~--- результат, $\vec{x}$~--- выходные значения)
+  \[
+  \exists z_1\dots\exists z_k\,(\psi_f(z_1,\dots,z_k,y)\land\psi_{g_1}(\vec{x},z_1)\land\dots\land\psi_{g_k}(\vec{x},z_k)).
+  \]
+  \item \textbf{Примитивная рекурсия:} если $f(\vec{x})$ и $g(\vec{x}, y, a)$ представимы ($\varphi_f$ и $\varphi_g$), используя $\beta$-функцию, кодируем последовательность значений $a_0,\dots,a_y$ и записываем условия, что $a_0=f(\vec{x})$ и $a_{i+1}=g(\vec{x},i,a_i)$. Формула представимости ($r$~--- результат, $y, \vec{x}$~--- входные значения):
+  \begin{align*}
+  \exists b\exists c\,\bigl[&\exists a_0(\beta(b,c,0)=a_0\land\varphi_f(\vec{x},a_0))\land \\
+  & \forall k<y\,\exists a_k\exists a_{k+1}(\beta(b,c,k)=a_k\land\beta(b,c,k+1)=a_{k+1}\land\varphi_g(\vec{x},k,a_k,a_{k+1}))\land \\
+  & \beta(b,c,y)=r\bigr].
+  \end{align*}
+  \item \textbf{Минимизация:} если $f(\vec{x},y)$ представима ($\varphi_f$), то $M\langle f\rangle$ представляется формулой
+  \[
+  \varphi_f(\vec{x},y,0)\land\forall u<y\,\neg\varphi_f(\vec{x},u,0).
+  \]
+\end{itemize}
+
+\subsection{Гёделева нумерация}
+Каждому символу языка присваивается натуральное число (гёделев номер). Например:
+\begin{enumerate}
+\item Отдельный символ.\vspace{0.2cm}
+
+\begin{tabular}{lc|lc||cll}
+Номер & Символ & Номер & Символ & Имя & $k,n$ & Гёделев номер\\
+3 & ( &               17 & $\&$ &  0 & $0,0$ & $27 + 6$\\
+5 & ) &               19 & $\forall$ & $(')$ & $0,1$ & $27 + 6 \cdot 3$\\
+7 & , &               21 & $\exists$ & $(+)$ & $0,2$ & $27 + 6 \cdot 9$\\
+9 & . &               23 & $\vdash$ & $(\cdot)$ & $1,2$ & $27 + 6 \cdot 2 \cdot 9$\\
+11 & $\neg$ &         $25 + 6\cdot k$ & $x_k$ & $(=)$ & $0,2$ & $29 + 6 \cdot 9$\\
+13 & $\rightarrow$ &  $27 + 6\cdot 2^k \cdot 3^n$ & $f_k^n$\\
+15 & $\vee$ &         $29 + 6\cdot 2^k \cdot 3^n$ & $P_k^n$ 
+\end{tabular}
+
+\item Формула. $\phi \equiv s_0s_1\dots s_{n-1}$. Гёделев номер: $\ulcorner\phi\urcorner = 2^{\ulcorner s_0\urcorner}\cdot 3^{\ulcorner s_1\urcorner} 
+\cdot \dots \cdot p_{n-1}^{\ulcorner s_{n-1}\urcorner}$.
+
+\item Доказательство. $\Pi = \delta_0\delta_1\dots\delta_{k-1}$, его гёделев номер: $\ulcorner\Pi\urcorner =
+2^{\ulcorner \delta_0\urcorner}\cdot 3^{\ulcorner \delta_1\urcorner} \cdot \dots \cdot p_{k-1}^{\ulcorner \delta_{k-1}\urcorner}$
+\end{enumerate}
+
+\subsection{Выразимость отношения Proof}
+Отношение $\mathrm{Proof}(y,x)$ означает: $y$ — гёделев номер доказательства, последняя формула которого имеет номер $x$. Это отношение рекурсивно, поскольку:
+\begin{enumerate}
+\item Проверка доказательства вычислима.
+\item Согласно тезису Чёрча, любая вычислимая функция
+вычислима с помощью рекурсивных функций.
+\end{enumerate}
+
+\subsection{Самоприменимость и первая теорема Гёделя}
+Введём отношение $W_1$:
+\[
+\langle\ulcorner\xi\urcorner,p\rangle \in W_1 \quad\text{если}\quad \mathsf{PA}\vdash \xi(\overline{\ulcorner\xi\urcorner})\ \text{и $p$ — номер доказательства}.
+\]
+Поскольку $W_1$ рекурсивно, оно выразимо в $\mathsf{PA}$ формулой $\omega_1(x_1,x_2)$ со свойствами:
+\begin{enumerate}
+  \item если $p$ — номер доказательства самоприменения $\varphi$, то $\vdash \omega_1(\overline{\ulcorner\varphi\urcorner},\overline{p})$;
+  \item иначе $\vdash \neg\omega_1(\overline{\ulcorner\varphi\urcorner},\overline{p})$.
+\end{enumerate}
+
+Определим формулу
+\[
+\sigma(x_1) := \forall p.\,\neg\omega_1(x_1,p).
+\]
+Интуитивно, $\sigma(\overline{\ulcorner\xi\urcorner})$ утверждает: «формула $\xi$ не имеет доказательства своего самоприменения».
+
+\textbf{Определение ($\omega$-непротиворечивость).} Теория $\mathsf{PA}$ называется $\omega$-непротиворечивой, если для любой формулы $\phi(x)$ из $\vdash\phi(\overline{0}), \vdash\phi(\overline{1}), \dots$ следует $\not\vdash\exists x.\neg\phi(x)$.
+
+\textbf{Теорема (первая теорема Гёделя о неполноте).}
+\begin{itemize}
+  \item Если $\mathsf{PA}$ непротиворечива, то $\not\vdash\sigma(\overline{\ulcorner\sigma\urcorner})$.
+  \item Если $\mathsf{PA}$ $\omega$-непротиворечива, то $\not\vdash\neg\sigma(\overline{\ulcorner\sigma\urcorner})$.
+\end{itemize}
+\emph{Доказательство.}
+\begin{enumerate}
+  \item Предположим $\vdash\sigma(\overline{\ulcorner\sigma\urcorner})$. Тогда существует номер доказательства $p$, так что $\langle\ulcorner\sigma\urcorner,p\rangle\in W_1$. Следовательно, $\vdash\omega_1(\overline{\ulcorner\sigma\urcorner},\overline{p})$. Отсюда $\vdash\exists p.\omega_1(\overline{\ulcorner\sigma\urcorner},p)$, т.е. $\vdash\neg\forall p.\neg\omega_1(\overline{\ulcorner\sigma\urcorner},p)$, что есть $\vdash\neg\sigma(\overline{\ulcorner\sigma\urcorner})$. Противоречие с непротиворечивостью.
+  \item Предположим $\vdash\neg\sigma(\overline{\ulcorner\sigma\urcorner})$, т.е. $\vdash\exists p.\omega_1(\overline{\ulcorner\sigma\urcorner},p)$. Если бы для каждого $n$ было $\vdash\neg\omega_1(\overline{\ulcorner\sigma\urcorner},\overline{n})$ (что верно, так как $\sigma(\overline{\ulcorner\sigma\urcorner})$ недоказуемо), то по $\omega$-непротиворечивости $\not\vdash\exists p.\omega_1(\overline{\ulcorner\sigma\urcorner},p)$ — противоречие. Значит, найдётся $p$, для которого $\vdash\omega_1(\overline{\ulcorner\sigma\urcorner},\overline{p})$, т.е. $\langle\ulcorner\sigma\urcorner,p\rangle\in W_1$. Тогда $\vdash\sigma(\overline{\ulcorner\sigma\urcorner})$ — противоречие.
+\end{enumerate}
+Таким образом, $\sigma(\overline{\ulcorner\sigma\urcorner})$ — неразрешимое предложение.
+
+\subsection{Вторая теорема Гёделя}
+Обозначим через $\psi(x,p)$ формулу, выражающую отношение $\mathrm{Proof}(p,x)$ (т.е. $p$ — номер доказательства формулы с номером $x$). Пусть $\pi(x) := \exists p.\psi(x,p)$ — формула, выражающая доказуемость. Формула
+\[
+\mathrm{Consis} := \neg\pi(\overline{\ulcorner 1=0\urcorner})
+\]
+выражает непротиворечивость $\mathsf{PA}$ (поскольку из противоречия выводится $0=1$).
+
+Для доказательства второй теоремы необходимы \emph{условия Гильберта–Бернайса–Лёба} (HBL):
+\begin{enumerate}
+  \item Если $\mathsf{PA}\vdash\alpha$, то $\mathsf{PA}\vdash\pi(\overline{\ulcorner\alpha\urcorner})$.
+  \item $\mathsf{PA}\vdash\pi(\overline{\ulcorner\alpha\urcorner}) \rightarrow \pi(\overline{\ulcorner\pi(\overline{\ulcorner\alpha\urcorner})\urcorner})$.
+  \item $\mathsf{PA}\vdash\pi(\overline{\ulcorner\alpha\rightarrow\beta\urcorner}) \rightarrow (\pi(\overline{\ulcorner\alpha\urcorner})\rightarrow\pi(\overline{\ulcorner\beta\urcorner}))$.
+\end{enumerate}
+Эти условия доказуемы в $\mathsf{PA}$ для подходящей формулы $\pi$.
+
+\textbf{Теорема (вторая теорема Гёделя).} Если $\mathsf{PA}$ непротиворечива, то $\mathsf{PA}\not\vdash\mathrm{Consis}$.
+\emph{Идея.}
+Пусть $\gamma$ — гёделево предложение, удовлетворяющее $\mathsf{PA}\vdash\gamma\leftrightarrow\neg\pi(\overline{\ulcorner\gamma\urcorner})$. Используя условия HBL, можно вывести $\mathsf{PA}\vdash\mathrm{Consis}\rightarrow\gamma$. Если бы $\mathsf{PA}\vdash\mathrm{Consis}$, то $\mathsf{PA}\vdash\gamma$, что противоречит первой теореме. Следовательно, $\mathrm{Consis}$ недоказуема.
+
+\subsection{Форма Россера}
+Заменив формулу доказуемости на «существует доказательство, и нет более короткого опровержения», можно ослабить условие $\omega$-непротиворечивости до обычной непротиворечивости. Пусть $\omega_2(x_1,x_2)$ выражает отношение «$p$ — номер доказательства опровержения $\xi$» ($\vdash\neg\xi(\overline{\ulcorner\xi\urcorner})$). Определим
+\[
+\rho(x_1) := \forall p.\,\omega_1(x_1,p)\rightarrow\exists q.\,q\le p\land\omega_2(x_1,q).
+\]
+Тогда $\rho(\overline{\ulcorner\rho\urcorner})$ утверждает: «меня легче опровергнуть, чем доказать». Теорема Россера: если $\mathsf{PA}$ непротиворечива, то $\not\vdash\rho(\overline{\ulcorner\rho\urcorner})$ и $\not\vdash\neg\rho(\overline{\ulcorner\rho\urcorner})$.
+
+\subsection{Расширения и пределы}
+Теоремы Гёделя справедливы для любого непротиворечивого рекурсивно аксиоматизируемого расширения $\mathsf{PA}$. В частности, они показывают, что арифметика не является ни синтаксически, ни семантически полной. Система Робинсона (конечно аксиоматизируемая, без схемы индукции) также неполна. Напротив, арифметика Пресбургера (только сложение) полна и разрешима.
+
+\section*{Заключение}
+Теоремы о полноте для логики высказываний и предикатов устанавливают, что формальный вывод исчерпывает всё логически истинное. Теоремы Гёделя о неполноте показывают, что для достаточно богатых формальных теорий (включая арифметику) свойство полноты нарушается: существуют истинные утверждения, не выводимые из аксиом, и даже утверждение о собственной непротиворечивости недоказуемо.
+
+\end{document}

@@ -1,0 +1,374 @@
+\documentclass[10pt]{article}
+\input{header.tex}
+
+\begin{document}
+
+\subsection*{Системы линейных уравнений (СЛУ)}
+
+\begin{definition}
+\textbf{Системой $m$ линейных уравнений с $n$ неизвестными} называется система вида:
+\begin{equation} \label{eq:sistema}
+\begin{cases}
+a_{11}x_1 + a_{12}x_2 + \dots + a_{1n}x_n = b_1, \\
+a_{21}x_1 + a_{22}x_2 + \dots + a_{2n}x_n = b_2, \\
+\dots \\
+a_{m1}x_1 + a_{m2}x_2 + \dots + a_{mn}x_n = b_m,
+\end{cases}
+\end{equation}
+
+\begin{enumerate}
+    \item $a_{ij} \in \mathbb{R} (\mathbb{C})$~--- коэффициенты системы, $b_i \in \mathbb{R} (\mathbb{C})$~--- свободные члены
+    \item $x_j$~--- неизвестные
+    \item $A = (a_{ij})_{m \times n}$~--- матрица коэффициентов (\textbf{основная матрица} системы)
+    \item $x = \begin{pmatrix}
+        x_1 \\ \vdots \\ x_n
+    \end{pmatrix}$~--- столбец неизвестных
+    \item $b = \begin{pmatrix}
+        b_1 \\ \vdots \\ b_m
+    \end{pmatrix}$~--- столбец свободных членов
+    \item $Ax = b$~--- матричная форма записи
+    \item $A = (A_1 \dots A_n)$, $\sum_{j=1}^n x_jA_j=b$~--- векторная форма записи
+\end{enumerate}
+\end{definition}
+
+\begin{definition}
+Матрица
+\[ (A \: | \: b) = \begin{pmatrix}
+a_{11} & a_{12} & \dots & a_{1n} & b_1 \\
+a_{21} & a_{22} & \dots & a_{2n} & b_2 \\
+\vdots & \vdots & \ddots & \vdots & \vdots \\
+a_{m1} & a_{m2} & \dots & a_{mn} & b_m
+\end{pmatrix}
+\]
+называется \textbf{расширенной матрицей} системы \eqref{eq:sistema}.
+\end{definition}
+
+\begin{definition}
+Система c $b = \mathbb{0}_m$ называется \textbf{однородной}, иначе \textbf{неоднородной}.
+\end{definition}
+
+\begin{definition}
+Упорядоченный набор чисел \((\alpha_1, \alpha_2, \dots, \alpha_n)\) называется \textbf{решением} системы \eqref{eq:sistema}, если при подстановке этих чисел в систему вместо соответствующих неизвестных каждое уравнение системы обращается в тождество.
+\end{definition}
+
+\begin{definition} \;
+\begin{enumerate}
+    \item \textbf{Разрешимая}, или \textbf{совместная} СЛАУ имеет решение;
+    \item \textbf{Неразрешимая}, или \textbf{несовместная} СЛАУ не имеет решения;
+    \item \textbf{Определённая} СЛАУ имеет единственное решение;
+    \item \textbf{Неопределённая} СЛАУ имеет больше одного решения.
+    \item Совокупность всех решений СЛАУ называется \textbf{общим решением}, а какое-то конкретное решение~--- \textbf{частным решением}.
+\end{enumerate}
+\end{definition}
+
+\subsection*{Критерий совместности неоднородной СЛУ (теорема Кронекера-Капелли)}
+
+\begin{theorem}[Кронекера–Капелли, критерий совместности]
+$Ax = b$ тогда и только тогда совместна, когда $\operatorname{rank} A = \operatorname{rank} (A \: | \: b)$.
+\end{theorem}
+
+\begin{proof}
+\begin{align*}
+    Ax = b\text{ совместна} &\Leftrightarrow \exists x_1 \dots x_n \in \mathbb{R}(\mathbb{C}) \: : \: x_1 A_1 + \dots + x_n A_n = b \\
+    &\Leftrightarrow \text{$b$~--- линейная комбинация столбцов $A$} \\
+    &\Leftrightarrow \operatorname{span}(A_1 \dots A_n) = \operatorname{span}(A_1 \dots A_n \: | \: b) \\
+    &\Leftrightarrow \operatorname{rank} A = \operatorname{rank} (A \: | \: b)
+\end{align*}
+\end{proof}
+
+\subsection*{Фундаментальная система решений однородной СЛУ.}
+
+\begin{theorem} \label{th:linsol}
+    Пусть $u_1, u_2$~--- решения $Ax = \mathbb{0}$. Тогда $\forall \alpha \in \mathbb{R}(\mathbb{C}) \quad u_1 + \alpha u_2$~--- тоже решение.
+\end{theorem}
+\begin{proof}
+$$
+    A u_1 = \mathbb{0}, A u_2 = \mathbb{0} \Rightarrow A (u_1 + \alpha u_2) = A u_1 + \alpha A u_2 = \mathbb{0}.
+$$
+\end{proof}
+
+\begin{corollary}
+    Общее решение СЛОУ образует линейное подпространство (по определению).
+\end{corollary}
+
+\begin{theorem}
+    Пусть $L$~--- общее решение \begin{equation} \tag{1}\label{eq:sistema1}
+        Ax = \mathbb{0}\text{.}
+    \end{equation}
+    Тогда $\operatorname{dim}L = n - \operatorname{rank} A$.
+\end{theorem}
+
+\begin{proof}
+    Пусть $\operatorname{rank} A = k \Leftrightarrow k\text{~--- линейная комбинация столбцов}$. Не умаляя общности, $A_1 A_2 \dots A_k$ линейно независимы, остальные столбцы~--- их линейная комбинация:
+    \begin{align*}
+        \exists \alpha_j^i \: : \: A_{k+j} = \alpha_j^1 A_1 + \dots + \alpha_j^k A_k &\Leftrightarrow \alpha_j^1 A_1 + \dots + \alpha_j^k A_k - A_{k+j} = \mathbb{0} \\
+        &\Leftrightarrow u_j = \begin{pmatrix}
+            \alpha_j^1 \\ \alpha_j^2 \\ \vdots \\ \alpha^j_k \\ 0 \\ \vdots \\ 0 \\ -1\text{ (индекс $k+j$)} \\ 0 \\ \vdots
+        \end{pmatrix}\text{~--- решение \eqref{eq:sistema1}},
+    \end{align*}
+    причём $u_1 \dots u_{n-k}$ линейно независимы.
+
+    Докажем, что $u_1 \dots u_{n-k}$~--- базис $L$. Осталось показать, что они~--- порождающая система. Пусть $$ u = \begin{pmatrix}
+        \alpha_1 \\ \vdots \\ \alpha_n
+    \end{pmatrix}$$~--- решение \eqref{eq:sistema1}. Пусть $$ v = u + \sum_{j=1}^{n-k} \alpha_{k+j} u_j = \begin{pmatrix}
+        \beta_1 \\ \vdots \\ \beta_k \\ 0 \\ \vdots
+    \end{pmatrix}$$ для каких-то $\beta_1 \dots \beta_k$. $v$~--- решение \eqref{eq:sistema1} как линейная комбинация решений по теореме \ref{th:linsol}, а значит $A v = \mathbb{0}$ и $\beta_1 A_1 + \dots + \beta_k A_k = \mathbb{0}$. По линейной независимости $A_1 \dots A_k$, $\beta_1 = \dots = \beta_k = 0$. Таким образом, \begin{align*}
+        v = \mathbb{0} \Leftrightarrow u + \sum_{j=1}^{n-k} \alpha_{k+j} u_j = \mathbb{0} \Rightarrow u = -\sum_{j=1}^{n-k} \alpha_{k+j} u_j\text{,}
+    \end{align*}
+    то есть $u_1 \dots u_{n-k}$~--- порождающая система $L$ и базис $L$, и значит $\operatorname{dim}(L) = n - k$.
+\end{proof}
+\begin{corollary} Для системы \eqref{eq:sistema1}:
+\begin{enumerate}
+    \item $\operatorname{rank} A = n \Rightarrow$ система имеет единственное решение $x = \mathbb{0}$. Такая система называется тривиальной.
+    \item $\operatorname{rank} A = k, \; 1 < k < n \Rightarrow$ система имеет бесконечно много решений.
+\end{enumerate}
+\end{corollary}
+
+\begin{definition}
+    Базис пространства решений СЛОУ называется \textbf{ФСР~--- фундаментальная система решений}.
+\end{definition}
+
+\subsection*{Общее решение неоднородной СЛУ.}
+
+\begin{theorem}[Структура общего решения СЛНУ]
+\begin{align}
+    Ax = \mathbb{0} \tag{1}\label{eq:sistema2} \\
+    Ax = b \tag{2}\label{eq:sistema3}
+\end{align}
+Если СЛНУ \eqref{eq:sistema3} совместна, а $x_0$~--- какое-то частное решение \eqref{eq:sistema3}, то $x$ решение \eqref{eq:sistema3} $\Leftrightarrow x = x_0 + u$, где $u$ является решением \eqref{eq:sistema2}.
+\end{theorem}
+
+\begin{proof}
+    \fbox{$\Rightarrow$} Имеем $Ax = b$, $A x_0 = b$. Тогда $A (x - x_0) = Ax - Ax_0 = b - b = \mathbb{0} \Rightarrow x-x_0$~--- решение \eqref{eq:sistema2}. $u := x-x_0, x = x_0 + u$.
+
+    \fbox{$\Leftarrow$} Имеем $A x_0 = b, A u = \mathbb{0}$. Тогда $A x = A (x_0 + u) = A x + Au = b + \mathbb{0} = b \Rightarrow x$~--- решение \eqref{eq:sistema3}.
+\end{proof}
+
+\begin{corollary}
+    Если система \eqref{eq:sistema3} совместна и $\operatorname{rank} A = n$, то она имеет единственное решение ($\operatorname{dim}(L) = 0$).
+\end{corollary}
+
+\subsection*{Метод Гаусса и формулы Крамера решения СЛУ.}
+
+Метод Гаусса~--- универсальный способ решения систем линейных уравнений, основанный на принципе последовательного исключения неизвестных.
+
+\begin{definition}
+\textbf{Элементарными преобразованиями} системы называются следующие преобразования:
+\begin{enumerate}
+    \item перестановка уравнений системы местами;
+    \item умножение некоторого уравнения системы на отличное от нуля число;
+    \item прибавление к одному уравнению другого;
+    \item вычеркивание или добавление нулевой строки.
+\end{enumerate}
+\end{definition}
+
+Очевидно, что при элементарных преобразованиях системы множество её решений остаётся неизменным, то есть система заменяется на эквивалентную.
+
+Элементарные преобразования системы удобно производить над строками ее расширенной матрицы \((A \: | \: b)\).
+
+\subsubsection*{Прямой ход метода Гаусса (приведение к ступенчатому виду)}
+
+Предположим, что первым в системе стоит уравнение, в котором коэффициент \(a_{11} \neq 0\) (иначе этого можно добиться перестановкой уравнений или неизвестных). К каждой строке расширенной матрицы, начиная со второй, прибавим почленно первую строку, умноженную на \(-\frac{a_{i1}}{a_{11}}\). В результате получим матрицу:
+\[
+\begin{pmatrix}
+a_{11} & a_{12} & \dots & a_{1n} & b_1 \\
+0 & a'_{22} & \dots & a'_{2n} & b'_2 \\
+\dots & \dots & \dots & \dots & \dots \\
+0 & a'_{m2} & \dots & a'_{mn} & b'_m
+\end{pmatrix}.
+\]
+Повторяя процедуру для подматрицы, получаемой отбрасыванием первой строки и первого столбца, приводим расширенную матрицу к ступенчатому виду:
+\[
+\begin{pmatrix}
+\boxed{a'_{11}} & a'_{12} & \dots & a'_{1r} & \dots & a'_{1n} & b'_1 \\
+0 & \boxed{a'_{22}} & \dots & a'_{2r} & \dots & a'_{2n} & b'_2 \\
+\dots & \dots & \dots & \dots & \dots & \dots & \dots \\
+0 & 0 & \dots & \boxed{a'_{rr}} & \dots & a'_{rn} & b'_r \\
+0 & 0 & \dots & 0 & \dots & 0 & b'_{r+1} \\
+\dots & \dots & \dots & \dots & \dots & \dots & \dots \\
+0 & 0 & \dots & 0 & \dots & 0 & b'_m
+\end{pmatrix}.
+\]
+
+\subsubsection*{Анализ совместности и обратный ход}
+
+\begin{itemize}
+    \item Если среди свободных членов \(b'_{r+1}, \dots, b'_m\) есть отличные от нуля, то система несовместна (так как \(\operatorname{rank} A < \operatorname{rank} (A \: | \: b)\)).
+    \item Если все \(b'_{r+1} = \dots = b'_m = 0\), то система совместна. Последние \(m-r\) уравнений отбрасываются.
+    \begin{itemize}
+        \item Если \(r = n\) (матрица приведена к треугольной форме,  \(\operatorname{rank} A = n\)), система имеет \textbf{единственное решение}. Находится последовательной подстановкой снизу вверх (обратный ход).
+        \item Если \(r < n\) (матрица приведена к трапециевидной форме, \(\operatorname{rank} A < n\)), система имеет \textbf{бесконечное множество решений}. Переменные делятся на \(r\) \textbf{базисных} (обычно первые \(r\)) и \(n-r\) \textbf{свободных}. Базисные переменные выражаются через свободные, что дает \textbf{общее решение}.
+    \end{itemize}
+\end{itemize}
+
+\begin{remark}
+При решении системы методом Гаусса нет необходимости заранее знать, совместна она или нет. Это определяется в процессе работы.
+\end{remark}
+
+\subsubsection*{Решение систем линейных уравнений методом обратной матрицы и по формулам Крамера}
+
+Рассмотрим систему \(n\) линейных уравнений с \(n\) неизвестными:
+\begin{equation} \label{eq:square_system}
+\begin{cases}
+a_{11}x_1 + a_{12}x_2 + \dots + a_{1n}x_n = b_1, \\
+a_{21}x_1 + a_{22}x_2 + \dots + a_{2n}x_n = b_2, \\
+\dots \\
+a_{n1}x_1 + a_{n2}x_2 + \dots + a_{nn}x_n = b_n.
+\end{cases}
+\end{equation}
+В матричном виде: \(AX = B\), где \(A\) – квадратная матрица порядка \(n\).
+
+Данное матричное уравнение, при условии, что \(\det A \neq 0\), решается методом обратной матрицы:
+\begin{equation} \label{eq:inverse_matrix}
+X = A^{-1} B.
+\end{equation}
+
+Формулу \eqref{eq:inverse_matrix} можно переписать в виде: \(X = \frac{1}{\det A} A^{*} B\), где \(A^{*}\) – союзная (присоединенная) матрица. Отсюда получаются формулы Крамера.
+
+\begin{theorem}[Правило Крамера]
+Если определитель матрицы системы \(\det A \neq 0\), то существует единственное решение системы линейных уравнений \eqref{eq:square_system}, определяемое формулами:
+\[
+x_i = \frac{\Delta_i}{\Delta},\quad i = \overline{1,n},
+\]
+где \(\Delta = \det A\), а \(\Delta_i\) – определитель матрицы, полученной из \(A\) заменой ее \(i\)-го столбца столбцом свободных членов \(B\).
+\end{theorem}
+
+\begin{remark}
+В частности, если однородная система линейных уравнений (\(B = 0\)) имеет \(\det A \neq 0\), то она обладает единственным нулевым решением.
+\end{remark}
+
+\begin{remark}
+Если определитель системы \(\Delta = 0\) и при этом: \\
+а) хотя бы один из \(\Delta_i \neq 0\), то система несовместна; \\
+b) все \(\Delta_i = 0\), то имеет место неопределенность: система либо несовместна, либо имеет бесконечное множество решений.
+\end{remark}
+
+\subsection*{Обратная матрица и условие ее существования.}
+
+\begin{definition}
+Квадратная матрица называется \textbf{невырожденной} (или \textbf{неособенной}), если ее определитель отличен от нуля (\(\det A \neq 0\)). В противном случае она называется \textbf{вырожденной} (или \textbf{особенной}).
+\end{definition}
+
+\begin{definition}
+\textbf{Обратной} к квадратной матрице \(A\) называется матрица \(A^{-1}\), которая удовлетворяет условию:
+\begin{equation} \label{eq:inverse_def}
+A A^{-1} = A^{-1} A = E,
+\end{equation}
+где \(E\) – единичная матрица.
+\end{definition}
+
+\begin{theorem}
+Матрица \(A\) тогда и только тогда имеет обратную матрицу, когда \(\operatorname{rank} A = n\).
+\end{theorem}
+
+\begin{proof}
+
+Обозначим:
+$$A^{-1} = \begin{pmatrix}
+x_{11} & x_{21} & \dots & x_{n1} \\
+x_{12} & x_{22} & \dots & x_{n2} \\
+\dots & \dots & \dots & \dots \\
+x_{1n} & x_{2n} & \dots & x_{nn}
+\end{pmatrix} = (X_1 \dots X_n)\\
+$$
+Тогда $E = A A^{-1} = A (X_1 \dots X_n) = (E_1 \dots E_n) \Leftrightarrow A X_i = E_i, \; i = 1..n$.
+\begin{align*}
+    A^{-1}\text{ существует} &\Leftrightarrow \forall i = 1..n \text{ система } A x = E_i\text{ совместна} \\
+    &\Leftrightarrow \forall i = 1..n \; \operatorname{rank}(A \: | \: E_i) = \operatorname{rank} A \\
+    &\Leftrightarrow \forall i = 1..n \; E_i \in \operatorname{span}(A_1 \dots A_n) \\
+    &\xLeftrightarrow{E_1, \dots, E_n \text{ базис } \mathbb{R}^n (\mathbb{C}^n)} \mathbb{R}^n(\mathbb{C}^n) \subseteq \operatorname{span}(A_1 \dots A_n) \subseteq \mathbb{R}^n(\mathbb{C}^n) \\
+    &\Leftrightarrow \operatorname{rank} A = n
+\end{align*}
+
+Метод Гаусса нахождения обратной матрицы: составляется матрица \((A\:|\:E)\) размера \(n \times 2n\). Элементарными преобразованиями строк преобразуют эту матрицу так, чтобы ее левая половина стала единичной. Тогда справа получится матрица \(A^{-1}\).
+    
+\end{proof}
+
+\begin{definition}
+\textbf{Минором} \(M_{ij}\) элемента \(a_{ij}\) определителя \(n\)-го порядка называется определитель \((n-1)\)-го порядка, полученный из данного вычеркиванием \(i\)-й строки и \(j\)-го столбца.
+\end{definition}
+
+\begin{definition}
+\textbf{Алгебраическим дополнением} \(A_{ij}\) элемента \(a_{ij}\) называется его минор, взятый со знаком, определяемым четностью суммы индексов:
+\begin{equation} \label{eq:alg_cofactor}
+A_{ij} = (-1)^{i+j} M_{ij}.
+\end{equation}
+\end{definition}
+
+\begin{theorem}
+Сумма произведений элементов какой-либо строки (столбца) определителя на свои алгебраические дополнения равна величине определителя (\textbf{разложение определителя по строке/столбцу}):
+\[
+\det A = \sum_{j=1}^{n} a_{ij} A_{ij} \quad (\text{по } i\text{-й строке}), \qquad
+\det A = \sum_{i=1}^{n} a_{ij} A_{ij} \quad (\text{по } j\text{-му столбцу}).
+\]
+Сумма произведений элементов какой-либо строки (столбца) определителя на алгебраические дополнения соответствующих элементов другой его строки (столбца) равна нулю:
+\[
+\sum_{j=1}^{n} a_{ij} A_{kj} = 0 \ (i \neq k), \qquad
+\sum_{i=1}^{n} a_{ij} A_{ik} = 0 \ (j \neq k).
+\]
+\end{theorem}
+
+\begin{theorem}
+Матрица \(A\) тогда и только тогда имеет обратную матрицу, когда она невырожденная (\(\det A \neq 0\)).
+\end{theorem}
+
+\begin{proof}
+\textbf{Достаточность.} Пусть \(\det A \neq 0\). Составим матрицу из алгебраических дополнений и транспонируем ее. Получившуюся матрицу называют \textbf{присоединенной} (или \textbf{союзной}) к \(A\) и обозначают \(A^{*}\):
+\[
+A^{*} = \begin{pmatrix}
+A_{11} & A_{21} & \dots & A_{n1} \\
+A_{12} & A_{22} & \dots & A_{n2} \\
+\dots & \dots & \dots & \dots \\
+A_{1n} & A_{2n} & \dots & A_{nn}
+\end{pmatrix},
+\]
+где \(A_{ij}\) – алгебраическое дополнение элемента \(a_{ij}\).
+
+Можно показать, что \(A A^{*} = A^{*} A = (\det A) E\). Разделив это равенство на \(\det A\), получим:
+\[
+A \left( \frac{1}{\det A} A^{*} \right) = \left( \frac{1}{\det A} A^{*} \right) A = E.
+\]
+Следовательно, матрица \(\frac{1}{\det A} A^{*}\) является обратной для \(A\). Таким образом, формула для вычисления обратной матрицы имеет вид:
+\begin{equation} \label{eq:inverse_formula}
+A^{-1} = \frac{1}{\det A} A^{*}.
+\end{equation}
+
+\textbf{Необходимость.} Пусть $\exists A^{-1}$. По свойству определителя, $1 = \det E = \det (AA^{-1}) = \det A \det A^{-1}$, тогда $\det A \neq 0$.
+\end{proof}
+
+\begin{remark}
+Для каждой невырожденной матрицы \(A\) существует \textbf{единственная} обратная матрица \(A^{-1}\), а также левая и правая обратные матрицы совпадают при существовании одной из них.
+\end{remark}
+
+\subsubsection*{Свойства обратных матриц}
+
+\begin{property}
+Операция обращения матрицы взаимна:
+\[
+(A^{-1})^{-1} = A.
+\]
+\end{property}
+
+\begin{property}
+Обратная матрица для произведения матриц равна произведению обратных матриц, взятых в обратном порядке:
+\[
+(AB)^{-1} = B^{-1} A^{-1}.
+\]
+\end{property}
+
+\begin{proof}
+\((AB)(B^{-1}A^{-1}) = A(B B^{-1}) A^{-1} = A E A^{-1} = A A^{-1} = E\). Следовательно, матрицы \(AB\) и \(B^{-1}A^{-1}\) взаимообратны.
+\end{proof}
+
+\begin{property}
+Операции обращения и транспонирования перестановочны:
+\[
+(A^{T})^{-1} = (A^{-1})^{T}.
+\]
+\end{property}
+
+\begin{proof}
+Из определения обратной матрицы: \(A A^{-1} = E\). Транспонируем это равенство: \((A A^{-1})^{T} = E^{T} \Rightarrow (A^{-1})^{T} A^{T} = E\). Следовательно, матрицы \(A^{T}\) и \((A^{-1})^{T}\) взаимообратны.
+\end{proof}
+
+\end{document}
