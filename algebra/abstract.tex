@@ -1,0 +1,499 @@
+\documentclass[10pt]{article}
+\input{header.tex}
+
+\begin{document}
+
+\section{Введение: Бинарные операции}
+\begin{definition}
+\textbf{Бинарная алгебраическая операция} на непустом множестве $M$ — это отображение $\cdot: M \times M \to M$, которое каждой упорядоченной паре $(a,b) \in M \times M$ ставит в соответствие элемент $c = a \cdot b \in M$. Требование $c \in M$ называется \textbf{замкнутостью} множества относительно операции.
+\end{definition}
+
+Основные свойства бинарных операций:
+\begin{itemize}
+    \item \textbf{Ассоциативность:} $(a \cdot b) \cdot c = a \cdot (b \cdot c)$ для всех $a,b,c \in M$.
+    \item \textbf{Коммутативность:} $a \cdot b = b \cdot a$ для всех $a,b \in M$.
+    \item \textbf{Наличие нейтрального элемента:} Существует элемент $e \in M$ такой, что $e \cdot a = a \cdot e = a$ для всех $a \in M$.
+    \item \textbf{Наличие обратного элемента:} Для каждого $a \in M$ существует элемент $a^{-1} \in M$ такой, что $a \cdot a^{-1} = a^{-1} \cdot a = e$.
+\end{itemize}
+
+\section{Полугруппы и моноиды}
+
+\subsection{Полугруппа}
+\begin{definition}
+\textbf{Полугруппой} называется непустое множество $S$ с заданной на нём ассоциативной бинарной операцией. Обозначается $(S, \cdot)$.
+\end{definition}
+
+\begin{example}
+    \begin{itemize}
+        \item Натуральные числа $\N$ с операцией сложения $(+)$ или умножения $(\cdot)$.
+        \item Множество всех непустых слов в некотором алфавите с операцией конкатенации — \textbf{свободная полугруппа}.
+        \item Любая группа является полугруппой.
+    \end{itemize}
+\end{example}
+
+\subsection{Моноид}
+\begin{definition}
+\textbf{Моноидом} называется полугруппа $(M, \cdot)$, содержащая нейтральный элемент $e$.
+\end{definition}
+
+\begin{stat}[Единственность нейтрального элемента]
+В любом моноиде нейтральный элемент единственен.
+\end{stat}
+\begin{proof}
+Предположим, что существуют два нейтральных элемента $e$ и $e'$. Тогда, поскольку $e$ нейтрален, $e \cdot e' = e'$. Но поскольку $e'$ также нейтрален, $e \cdot e' = e$. Следовательно, $e = e'$.
+\end{proof}
+
+\begin{example}
+    \begin{itemize}
+        \item $\N$ с умножением (нейтральный элемент $1$).
+        \item $\Z$, $\Q$, $\R$ как с умножением, так и со сложением (нейтральные элементы $0$ для сложения и $1$ для умножения).
+        \item Множество всех слов (включая пустое слово $\varepsilon$) в алфавите $A$ с операцией конкатенации — \textbf{свободный моноид} $A^*$.
+    \end{itemize}
+\end{example}
+
+\section{Группы}
+
+\subsection{Определение и примеры}
+\begin{definition}
+\textbf{Группой} называется моноид $(G, \cdot)$, в котором для каждого элемента $a \in G$ существует \textbf{обратный элемент} $a^{-1} \in G$ такой, что $a \cdot a^{-1} = a^{-1} \cdot a = e$.
+\end{definition}
+
+\begin{stat}[Единственность обратного элемента]
+В любой группе для каждого элемента $a$ обратный элемент $a^{-1}$ единственен.
+\end{stat}
+\begin{proof}
+Пусть $b$ и $c$ — два обратных элемента для $a$. Тогда:
+$$b = b \cdot e = b \cdot (a \cdot c) = (b \cdot a) \cdot c = e \cdot c = c.$$
+Здесь мы использовали ассоциативность и определение обратного элемента.
+\end{proof}
+
+Группа называется \textbf{абелевой} (или коммутативной), если операция коммутативна: $a \cdot b = b \cdot a$ для всех $a,b \in G$.
+
+\begin{example}
+    \begin{itemize}
+        \item $(\Z, +)$, $(\Q, +)$, $(\R, +)$, $(\CC, +)$ — абелевы группы.
+        \item $(\Q \setminus \{0\}, \cdot)$, $(\R \setminus \{0\}, \cdot)$, $(\CC \setminus \{0\}, \cdot)$ — абелевы группы.
+        \item Множество всех обратимых матриц $GL_n(\R)$ (общая линейная группа) с операцией умножения — неабелева.
+    \end{itemize}
+\end{example}
+
+\subsection{Подгруппы}
+\begin{definition}
+Непустое подмножество $H \subseteq G$ называется \textbf{подгруппой} группы $G$ (обозначается $H \le G$), если оно само является группой относительно той же операции, что и $G$.
+\end{definition}
+
+\begin{stat}[Критерий подгруппы]
+Непустое подмножество $H \subseteq G$ является подгруппой тогда и только тогда, когда выполнены следующие условия:
+\begin{enumerate}
+    \item $e \in H$ (содержит нейтральный элемент);
+    \item Для всех $a, b \in H$: $ab \in H$ (замкнутость относительно умножения);
+    \item Для всех $a \in H$: $a^{-1} \in H$ (замкнутость относительно взятия обратного).
+\end{enumerate}
+\end{stat}
+
+\begin{stat}[Упрощенный критерий подгруппы]
+Непустое подмножество $H \subseteq G$ является подгруппой тогда и только тогда, когда для всех $a, b \in H$ выполняется $ab^{-1} \in H$.
+\end{stat}
+
+\subsection{Смежные классы и их свойства}
+\begin{definition}
+Пусть $H \le G$ и $g \in G$. Множество $gH = \{gh \mid h \in H\}$ называется \textbf{левым смежным классом} группы $G$ по подгруппе $H$. Аналогично определяется правый смежный класс $Hg$.
+\end{definition}
+
+\begin{stat}[Свойства смежных классов]
+Для любой подгруппы $H \le G$ и элементов $a, b \in G$ выполняются следующие свойства:
+\begin{enumerate}
+    \item $a \in aH$.
+    \item $aH = H$ тогда и только тогда, когда $a \in H$.
+    \item $aH = bH$ тогда и только тогда, когда $a^{-1}b \in H$.
+    \item Два левых смежных класса либо совпадают, либо не пересекаются.
+\end{enumerate}
+\end{stat}
+\begin{proof}
+\begin{enumerate}
+    \item Так как $e \in H$, то $a = a e \in aH$.
+    \item 
+        \begin{itemize}
+            \item[($\Rightarrow$)] Пусть $aH = H$. Поскольку $a = a e \in aH$, то $a \in H$.
+            \item[($\Leftarrow$)] Пусть $a \in H$. Тогда для любого $h \in H$ произведение $ah \in H$ (в силу замкнутости $H$), поэтому $aH \subseteq H$. С другой стороны, для любого $h \in H$ имеем $h = a(a^{-1}h)$, причём $a^{-1}h \in H$, значит $h \in aH$, т.е. $H \subseteq aH$. Таким образом, $aH = H$.
+        \end{itemize}
+    \item 
+        \begin{itemize}
+            \item[($\Rightarrow$)] Предположим $aH = bH$. Так как $a \in aH$, то $a \in bH$, поэтому существует такой $h \in H$, что $a = b h$. Тогда $a^{-1}b = (b h)^{-1}b = h^{-1} b^{-1} b = h^{-1} \in H$.
+            \item[($\Leftarrow$)] Пусть $a^{-1}b \in H$. Тогда $b = a (a^{-1}b) \in aH$. Отсюда следует, что $bH \subseteq aH$: действительно, любой элемент $x \in bH$ имеет вид $x = b h' = a (a^{-1}b) h'$, причём $(a^{-1}b) h' \in H$, поэтому $x \in aH$. Аналогично, из $a^{-1}b \in H$ получаем $(a^{-1}b)^{-1} = b^{-1}a \in H$, значит $a = b (b^{-1}a) \in bH$, и тогда $aH \subseteq bH$ (по той же причине). Следовательно, $aH = bH$.
+        \end{itemize}
+    \item Если $aH \cap bH \neq \varnothing$, то существует элемент $x \in aH \cap bH$. Тогда $x = a h_1 = b h_2$ для некоторых $h_1, h_2 \in H$. Отсюда $a^{-1}b = h_1 h_2^{-1} \in H$. По свойству 3 получаем $aH = bH$. Таким образом, два смежных класса либо не пересекаются, либо совпадают.
+\end{enumerate}
+\end{proof}
+\subsection{Нормальные подгруппы и факторгруппы}
+\begin{definition}
+Подгруппа $N \le G$ называется \textbf{нормальным делителем} (или нормальной подгруппой) группы $G$, если для всех $g \in G$ выполняется $gN = Ng$. Обозначается $N \triangleleft G$.
+\end{definition}
+
+\begin{definition}
+Пусть $N \triangleleft G$. Множество левых смежных классов $G/N = \{gN \mid g \in G\}$ называется \textbf{факторгруппой} группы $G$ по $N$. Операция на $G/N$ задаётся формулой:
+$$(g_1 N)(g_2 N) = (g_1 g_2) N.$$
+\end{definition}
+
+\begin{stat}[Корректность операции в факторгруппе]
+Операция $(g_1 N)(g_2 N) = (g_1 g_2) N$ определена корректно, т.е. не зависит от выбора представителей $g_1$ и $g_2$ в своих классах.
+\end{stat}
+\begin{proof}
+Пусть $g_1 N = g_1' N$ и $g_2 N = g_2' N$. По свойству смежных классов (п.3) это означает, что $g_1^{-1} g_1' \in N$ и $g_2^{-1} g_2' \in N$. Тогда существуют $n_1, n_2 \in N$ такие, что $g_1' = g_1 n_1$, $g_2' = g_2 n_2$. Нужно показать, что $(g_1 g_2) N = (g_1' g_2') N$.
+Вычислим $g_1' g_2' = (g_1 n_1)(g_2 n_2) = g_1 (n_1 g_2) n_2$. Поскольку $N$ нормальна, $n_1 g_2 = g_2 n_3$ для некоторого $n_3 \in N$. Тогда $g_1' g_2' = g_1 g_2 (n_3 n_2)$, где $n_3 n_2 \in N$. Следовательно, $g_1' g_2' \in (g_1 g_2) N$, и значит $(g_1' g_2') N = (g_1 g_2) N$ по свойству 3 смежных классов.
+\end{proof}
+
+\begin{stat}[Групповые свойства факторгруппы]
+Множество $G/N$ с указанной операцией образует группу.
+\end{stat}
+\begin{proof}
+Проверим аксиомы группы:
+\begin{itemize}
+    \item \textbf{Ассоциативность:} $(g_1 N \cdot g_2 N) \cdot g_3 N = (g_1 g_2) N \cdot g_3 N = (g_1 g_2) g_3 N = g_1 (g_2 g_3) N = g_1 N \cdot (g_2 g_3) N = g_1 N \cdot (g_2 N \cdot g_3 N)$.
+    \item \textbf{Нейтральный элемент:} класс $eN = N$ является нейтральным, так как $eN \cdot gN = (e g) N = gN$ и $gN \cdot eN = (g e) N = gN$.
+    \item \textbf{Обратный элемент:} для элемента $gN$ обратным будет $g^{-1} N$, поскольку $gN \cdot g^{-1} N = (g g^{-1}) N = eN = N$ и $g^{-1} N \cdot gN = (g^{-1} g) N = N$.
+\end{itemize}
+\end{proof}
+
+\subsection{Гомоморфизмы групп}
+\begin{definition}
+Пусть $(G, \cdot)$ и $(H, \star)$ — группы. Отображение $\varphi: G \to H$ называется \textbf{гомоморфизмом групп}, если для всех $a, b \in G$:
+$$\varphi(a \cdot b) = \varphi(a) \star \varphi(b).$$
+\end{definition}
+
+\begin{definition}
+\textbf{Ядром гомоморфизма} $\varphi: G \to H$ называется множество:
+$$\operatorname{Ker}\varphi = \{a \in G \mid \varphi(a) = e_H\}.$$
+\end{definition}
+
+\begin{definition}
+\textbf{Образом гомоморфизма} $\varphi: G \to H$ называется множество:
+$$\operatorname{Im}\varphi = \{b \in H \mid \exists a \in G: \varphi(a) = b\}.$$
+\end{definition}
+
+\begin{stat}[Свойства гомоморфизмов]
+Для любого гомоморфизма групп $\varphi: G \to H$ выполняются следующие свойства:
+\begin{enumerate}
+    \item $\varphi(e_G) = e_H$, где $e_G$, $e_H$ — нейтральные элементы групп $G$ и $H$ соответственно.
+    \item $\varphi(a^{-1}) = (\varphi(a))^{-1}$ для всех $a \in G$.
+    \item $\operatorname{Ker}\varphi$ является нормальной подгруппой группы $G$.
+    \item $\operatorname{Im}\varphi$ является подгруппой группы $H$.
+\end{enumerate}
+\end{stat}
+\begin{proof}
+\begin{enumerate}
+    \item $\varphi(e_G) \star \varphi(e_G) = \varphi(e_G \cdot e_G) = \varphi(e_G)$. Умножая справа на $(\varphi(e_G))^{-1}$, получаем $\varphi(e_G) = e_H$.
+    \item $\varphi(a) \star \varphi(a^{-1}) = \varphi(a a^{-1}) = \varphi(e_G) = e_H$. Следовательно, $\varphi(a^{-1})$ является обратным к $\varphi(a)$, и в силу единственности обратного элемента $\varphi(a^{-1}) = (\varphi(a))^{-1}$.
+    \item Проверим условия упрощенного критерия подгруппы: для любых $a, b \in \operatorname{Ker}\varphi$ должно выполняться $ab^{-1} \in \operatorname{Ker}\varphi$.
+
+Пусть $a, b \in \operatorname{Ker}\varphi$, то есть $\varphi(a) = e_H$ и $\varphi(b) = e_H$. Тогда:
+\[
+\varphi(ab^{-1}) = \varphi(a)\varphi(b^{-1}) = \varphi(a)(\varphi(b))^{-1} = e_H e_H^{-1} = e_H.
+\]
+Здесь мы использовали свойство гомоморфизма $\varphi(b^{-1}) = (\varphi(b))^{-1}$ и то, что $e_H^{-1} = e_H$.
+
+Таким образом, $ab^{-1} \in \operatorname{Ker}\varphi$. По упрощенному критерию подгруппы, $\operatorname{Ker}\varphi$ является подгруппой $G$.
+
+Проверим нормальность: пусть $a \in \operatorname{Ker}\varphi$ и $g \in G$. Тогда $\varphi(g a g^{-1}) = \varphi(g)\varphi(a)\varphi(g^{-1}) = \varphi(g) e_H \varphi(g)^{-1} = e_H$, значит $g a g^{-1} \in \operatorname{Ker}\varphi$. Это равносильно $g \operatorname{Ker}\varphi = \operatorname{Ker}\varphi g$.
+    \item Так как $\varphi(e_G)=e_H$, то $e_H \in \operatorname{Im}\varphi$. Пусть $x,y \in \operatorname{Im}\varphi$, т.е. $x=\varphi(a)$, $y=\varphi(b)$ для некоторых $a,b \in G$. Тогда $xy^{-1} = \varphi(a)(\varphi(b))^{-1} = \varphi(a)\varphi(b^{-1}) = \varphi(ab^{-1}) \in \operatorname{Im}\varphi$. Следовательно, по упрощенному критерию подгруппы, $\operatorname{Im}\varphi$ — подгруппа.
+\end{enumerate}
+\end{proof}
+
+\subsection{Теорема о гомоморфизме для групп}
+\begin{definition}
+Гомоморфизм групп $\varphi: G \to H$ называется \textbf{изоморфизмом групп}, если $\varphi$ является биективным отображением (т.е. одновременно инъективным и сюръективным). Группы $G$ и $H$ называются \textbf{изоморфными} (обозначение $G \cong H$), если существует хотя бы один изоморфизм между ними.
+\end{definition}
+
+\begin{theorem}[Первая теорема об изоморфизме]
+Пусть $\varphi: G \to H$ — гомоморфизм групп. Тогда $\operatorname{Ker}\varphi \triangleleft G$ и
+$$G / \operatorname{Ker}\varphi \cong \operatorname{Im}\varphi.$$
+Более точно, существует изоморфизм $\psi: G/\operatorname{Ker}\varphi \to \operatorname{Im}\varphi$, заданный формулой $\psi(g\operatorname{Ker}\varphi) = \varphi(g)$.
+\end{theorem}
+\begin{proof}
+Покажем, что отображение $\psi$ корректно определено и является изоморфизмом.
+\begin{itemize}
+    \item \textbf{Корректность:} если $g\operatorname{Ker}\varphi = g'\operatorname{Ker}\varphi$, то по свойству смежных классов $g^{-1}g' \in \operatorname{Ker}\varphi$, т.е. $\varphi(g^{-1}g') = e_H$. Тогда $\varphi(g') = \varphi(g)\varphi(g^{-1}g') = \varphi(g)e_H = \varphi(g)$, значит $\psi(g\operatorname{Ker}\varphi) = \psi(g'\operatorname{Ker}\varphi)$.
+    \item \textbf{Гомоморфизм:} $\psi(g_1\operatorname{Ker}\varphi \cdot g_2\operatorname{Ker}\varphi) = \psi(g_1g_2\operatorname{Ker}\varphi) = \varphi(g_1g_2) = \varphi(g_1)\varphi(g_2) = \psi(g_1\operatorname{Ker}\varphi)\,\psi(g_2\operatorname{Ker}\varphi)$.
+    \item \textbf{Инъективность:} если $\psi(g\operatorname{Ker}\varphi) = e_H$, то $\varphi(g) = e_H$, значит $g \in \operatorname{Ker}\varphi$, и $g\operatorname{Ker}\varphi = \operatorname{Ker}\varphi$ (нейтральный элемент в факторгруппе).
+    \item \textbf{Сюръективность:} любой элемент образа $\operatorname{Im}\varphi$ имеет вид $\varphi(g)$ для некоторого $g$, тогда $\psi(g\operatorname{Ker}\varphi) = \varphi(g)$.
+\end{itemize}
+Таким образом, $\psi$ — изоморфизм.
+\end{proof}
+
+\begin{corollary}[Критерий инъективности гомоморфизма]
+Гомоморфизм групп $\varphi: G \to H$ является инъективным тогда и только тогда, когда $\operatorname{Ker}\varphi = \{e_G\}$.
+\end{corollary}
+\begin{proof}
+Если $\varphi$ инъективен, то только $e_G$ может отображаться в $e_H$, поэтому $\operatorname{Ker}\varphi = \{e_G\}$.
+Обратно, пусть $\operatorname{Ker}\varphi = \{e_G\}$. По теореме о гомоморфизме, $G/\{e_G\} \cong \operatorname{Im}\varphi$, причём $\phi(g) = \psi(g \{e_G\})$~--- инъекция в $G$ как композиция инъекции $g \mapsto g \{e_G\}$ и инъекции $\psi$.
+\end{proof}
+
+\subsection{Теорема Кэли}
+\begin{theorem}[Теорема Кэли]
+Любая конечная группа $G$ изоморфна некоторой подгруппе симметрической группы $S_n$ (где $n = |G|$).
+\end{theorem}
+\begin{proof}
+Рассмотрим множество $S_G$ всех биекций множества $G$ на себя (перестановок). $S_G$ является группой относительно композиции и изоморфна $S_n$, где $n = |G|$.
+
+Для каждого элемента $g \in G$ определим отображение $L_g: G \to G$ формулой $L_g(x) = gx$ для всех $x \in G$ (левый сдвиг). Покажем, что $L_g$ — биекция:
+\begin{itemize}
+    \item \textbf{Инъективность:} если $L_g(x) = L_g(y)$, то $gx = gy$. Умножая слева на $g^{-1}$, получаем $x = y$.
+    \item \textbf{Сюръективность:} для любого $y \in G$ существует $x = g^{-1}y$, такой что $L_g(x) = g(g^{-1}y) = y$.
+\end{itemize}
+Таким образом, $L_g \in S_G$.
+
+Рассмотрим отображение $\varphi: G \to S_G$, определенное как $\varphi(g) = L_g$. Проверим, что это гомоморфизм:
+$$(L_g \circ L_h)(x) = L_g(L_h(x)) = g(hx) = (gh)x = L_{gh}(x).$$
+Следовательно, $\varphi(gh) = L_{gh} = L_g \circ L_h = \varphi(g) \circ \varphi(h)$.
+
+Найдем ядро этого гомоморфизма: если $\varphi(g) = \text{id}$, то $L_g(x) = x$ для всех $x$, в частности $L_g(e) = ge = g = e$. Значит, $\operatorname{Ker}\varphi = \{e\}$ — тривиально. По критерию инъективности, $\varphi$ — инъективный гомоморфизм.
+
+Рассмотрим теперь $\varphi$ как отображение $G$ на свой образ $\operatorname{Im}\varphi$. По доказанному выше, образ гомоморфизма является подгруппой в $S_G$. Так как $\varphi$ инъективно и по построению сюръективно на $\operatorname{Im}\varphi$, оно задает биективный гомоморфизм $G \to \operatorname{Im}\varphi$, то есть изоморфизм групп. Следовательно, $G \cong \operatorname{Im}\varphi \le S_G$.
+\end{proof}
+
+\section{Кольца и поля}
+
+\subsection{Определение кольца}
+\begin{definition}
+\textbf{Кольцом} называется множество $R$ с двумя бинарными операциями: сложением $(+)$ и умножением $(\cdot)$, такими что:
+\begin{enumerate}
+    \item $(R, +)$ — абелева группа (нейтральный элемент — $0$, обратный по сложению — $-a$).
+    \item $(R, \cdot)$ — полугруппа (т.е. умножение ассоциативно).
+    \item Выполняются законы дистрибутивности:
+    $a(b+c) = ab + ac$ и $(a+b)c = ac + bc$ для всех $a,b,c \in R$.
+\end{enumerate}
+\end{definition}
+
+\subsection{Простейшие свойства колец}
+\begin{stat}
+В любом кольце $R$ выполняются следующие свойства для всех $a, b \in R$:
+\begin{enumerate}
+    \item $a \cdot 0 = 0 \cdot a = 0$.
+    \item $a(-b) = (-a)b = -(ab)$.
+    \item $(-a)(-b) = ab$.
+    \item Если в кольце есть единица $1$, то она единственна.
+\end{enumerate}
+\end{stat}
+\begin{proof}
+\begin{enumerate}
+    \item $a \cdot 0 = a(0+0) = a \cdot 0 + a \cdot 0$. Прибавляя к обеим частям $-(a \cdot 0)$, получаем $0 = a \cdot 0$. Аналогично для $0 \cdot a$.
+    \item $ab + a(-b) = a(b + (-b)) = a \cdot 0 = 0$. Следовательно, $a(-b) = -(ab)$. Аналогично $(-a)b = -(ab)$.
+    \item $(-a)(-b) = -(a(-b)) = -(-(ab)) = ab$, используя пункт 2 дважды.
+    \item Единственность единицы доказывается так же, как единственность нейтрального элемента в моноиде. Если $1$ и $1'$ — две единицы, то $1 = 1 \cdot 1' = 1'$.
+\end{enumerate}
+\end{proof}
+
+\subsection{Типы колец}
+\begin{definition}
+Элемент $a \neq 0$ кольца $R$ называется \textbf{делителем нуля}, если существует $b \neq 0$ такое, что $ab = 0$ или $ba = 0$.
+\end{definition}
+
+\begin{definition}
+\textbf{Область целостности} — это коммутативное кольцо с единицей $1 \neq 0$, не содержащее делителей нуля.
+\end{definition}
+
+\subsection{Поле}
+\begin{definition}
+\textbf{Полем} называется коммутативное кольцо с единицей $1 \neq 0$, в котором каждый ненулевой элемент обратим по умножению, т.е. для любого $a \neq 0$ существует $a^{-1}$ такой, что $a a^{-1} = 1$.
+\end{definition}
+
+\begin{definition}
+\textbf{Характеристикой поля} $F$ называется наименьшее натуральное число $n$ такое, что $n \cdot 1 = \underbrace{1+1+\dots+1}_{n} = 0$, если такое $n$ существует; иначе характеристика равна нулю. Обозначение: $\operatorname{char} F$.
+\end{definition}
+
+\section{Идеалы}
+
+\subsection{Определение и виды идеалов}
+\begin{definition}
+Пусть $R$ — кольцо. Непустое подмножество $I \subseteq R$ называется:
+\begin{itemize}
+    \item \textbf{Левым идеалом}, если:
+    \begin{enumerate}
+        \item $(I, +)$ — подгруппа $(R, +)$ (т.е. $a, b \in I \Rightarrow a-b \in I$).
+        \item Для всех $r \in R$ и $a \in I$ выполняется $ra \in I$.
+    \end{enumerate}
+    \item \textbf{Правым идеалом}, если вместо $ra \in I$ выполняется $ar \in I$.
+    \item \textbf{Двусторонним идеалом} (или просто идеалом), если он является одновременно левым и правым идеалом.
+\end{itemize}
+\end{definition}
+
+\begin{example}
+    \begin{itemize}
+        \item В кольце целых чисел $\Z$ все идеалы имеют вид $n\Z = \{nk \mid k \in \Z\}$.
+        \item В кольце многочленов $F[x]$ идеал $(f(x)) = \{f(x)g(x) \mid g(x) \in F[x]\}$.
+    \end{itemize}
+\end{example}
+
+\subsection{Факторкольца}
+\begin{definition}
+Если $I$ — двусторонний идеал кольца $R$, то на множестве смежных классов $R/I = \{a + I \mid a \in R\}$ можно определить операции сложения и умножения:
+$$(a+I) + (b+I) = (a+b) + I, \quad (a+I)(b+I) = ab + I.$$
+Это множество образует кольцо, называемое \textbf{факторкольцом} кольца $R$ по идеалу $I$.
+\end{definition}
+
+\subsection{Теорема о гомоморфизме для колец (аналог)}
+\begin{theorem}[Первая теорема об изоморфизме для колец]
+Пусть $\varphi: R \to S$ — гомоморфизм колец. Тогда $\operatorname{Ker}\varphi$ — двусторонний идеал в $R$, $\operatorname{Im}\varphi$ — подкольцо в $S$, и существует изоморфизм колец:
+$$R / \operatorname{Ker}\varphi \cong \operatorname{Im}\varphi.$$
+\end{theorem}
+(Доказательство аналогично групповому случаю.)
+
+\subsection*{Применение идеалов}
+Идеалы играют ключевую роль во многих областях математики:
+\begin{itemize}
+    \item \textbf{Теория чисел:} в кольце целых чисел $\Z$ идеалы вида $n\Z$ позволяют изучать делимость и строить кольца вычетов $\Z_n$, что является основой модулярной арифметики.
+    \item \textbf{Алгебраическая геометрия:} множества нулей систем многочленов (алгебраические многообразия) соответствуют идеалам в кольце многочленов; теорема Гильберта о нулях устанавливает фундаментальную связь.
+    \item \textbf{Теория полей:} максимальные идеалы используются для построения полей как факторколец; например, поле комплексных чисел $\CC$ может быть получено как факторкольцо $\R[x]/(x^2+1)$.
+    \item \textbf{Криптография:} идеалы в кольцах многочленов над конечными полями лежат в основе некоторых криптосистем (например, NTRUEncrypt).
+    \item \textbf{Функциональный анализ:} идеалы в банаховых алгебрах связаны с теорией спектра операторов.
+\end{itemize}
+
+\section{Модули}
+
+\subsection{Определение}
+\begin{definition}
+Пусть $R$ — кольцо с единицей $1$. \textbf{Левым $R$-модулем} называется абелева группа $(M, +)$ вместе с операцией умножения на скаляр $R \times M \to M$, $(r,m) \mapsto rm$, удовлетворяющая для всех $r,s \in R$, $m,n \in M$:
+\begin{enumerate}
+    \item $(rs)m = r(sm)$ (ассоциативность умножения на скаляр).
+    \item $1m = m$ (унитарность).
+    \item $(r+s)m = rm + sm$ (дистрибутивность сложения скаляров).
+    \item $r(m+n) = rm + rn$ (дистрибутивность сложения векторов).
+\end{enumerate}
+\end{definition}
+
+\begin{example}
+    Любая абелева группа является $\Z$-модулем (умножение на целое число $n$ определяется как $n$-кратное сложение).
+\end{example}
+
+\subsection{Подмодули и гомоморфизмы модулей}
+\begin{definition}
+\textbf{Подмодулем} модуля $M$ называется подгруппа $N \subseteq M$, замкнутая относительно умножения на скаляры: для всех $r \in R$, $n \in N$ выполняется $rn \in N$.
+\end{definition}
+
+\begin{definition}
+Пусть $M$ и $N$ — $R$-модули. Отображение $\varphi: M \to N$ называется \textbf{гомоморфизмом модулей}, если для всех $m_1, m_2 \in M$ и $r \in R$:
+\begin{enumerate}
+    \item $\varphi(m_1 + m_2) = \varphi(m_1) + \varphi(m_2)$ (гомоморфизм групп).
+    \item $\varphi(rm) = r\varphi(m)$ (однородность).
+\end{enumerate}
+\end{definition}
+
+\begin{definition}
+\textbf{Ядром гомоморфизма модулей} $\varphi: M \to N$ называется множество $\operatorname{Ker}\varphi = \{m \in M \mid \varphi(m) = 0_N\}$.
+\end{definition}
+
+\begin{theorem}[Первая теорема об изоморфизме для модулей]
+Пусть $\varphi: M \to N$ — гомоморфизм $R$-модулей. Тогда $\operatorname{Ker}\varphi$ — подмодуль $M$, $\operatorname{Im}\varphi$ — подмодуль $N$, и существует изоморфизм $R$-модулей:
+$$M / \operatorname{Ker}\varphi \cong \operatorname{Im}\varphi.$$
+\end{theorem}
+(Доказательство аналогично групповому случаю.)
+
+\subsection*{Применение модулей}
+Модули являются обобщением векторных пространств и находят применение в различных областях:
+\begin{itemize}
+    \item \textbf{Линейная алгебра:} векторные пространства над полем — это модули над полем; теория модулей обобщает многие понятия (базис, размерность, линейные операторы).
+    \item \textbf{Теория представлений:} представления групп и алгебр Ли изучаются как модули над групповым кольцом или универсальной обертывающей алгеброй. Каждое представление группы $G$ — это $KG$-модуль, где $K$ — поле.
+    \item \textbf{Гомологическая алгебра:} модули являются основным объектом изучения; функторы Ext и Tor строятся с помощью проективных и инъективных модулей.
+    \item \textbf{Алгебраическая топология:} группы гомологий и когомологий являются модулями над кольцом коэффициентов (например, $\Z$-модули).
+    \item \textbf{Теория колец:} сами кольца и их идеалы являются модулями, что позволяет применять модульную технику к изучению строения колец.
+\end{itemize}
+
+\section{Решётки (Lattices)}
+
+\subsection{Полурешётки}
+\begin{definition}
+\textbf{Полурешёткой} называется полугруппа $(S, \cdot)$ с коммутативной и идемпотентной операцией, т.е. для всех $a,b \in S$:
+\begin{enumerate}
+    \item $a \cdot a = a$ (идемпотентность).
+    \item $a \cdot b = b \cdot a$ (коммутативность).
+\end{enumerate}
+\end{definition}
+
+\begin{remark}[Частичный порядок в полурешётке]
+В полурешётке можно ввести естественный частичный порядок. Если операция интерпретируется как точная нижняя грань (meet, обозначается $\wedge$), то полагают
+$$a \le b \quad \Longleftrightarrow \quad a \wedge b = a.$$
+Если операция интерпретируется как точная верхняя грань (join, обозначается $\vee$), то полагают
+$$a \le b \quad \Longleftrightarrow \quad a \vee b = b.$$
+Легко проверить, что это отношение рефлексивно, транзитивно и антисимметрично, следовательно, является частичным порядком. Обратно, любое частично упорядоченное множество, в котором каждое двухэлементное подмножество имеет точную нижнюю (верхнюю) грань, является полурешёткой.
+\end{remark}
+
+\subsection{Решётки}
+\begin{definition}
+\textbf{Решёткой} называется алгебраическая структура $(L, \vee, \wedge)$ с двумя бинарными операциями (join и meet), удовлетворяющая для всех $a,b,c \in L$:
+\begin{itemize}
+    \item Идемпотентность: $a \vee a = a$, $a \wedge a = a$.
+    \item Коммутативность: $a \vee b = b \vee a$, $a \wedge b = b \wedge a$.
+    \item Ассоциативность: $(a \vee b) \vee c = a \vee (b \vee c)$, $(a \wedge b) \wedge c = a \wedge (b \wedge c)$.
+    \item Законы поглощения: $a \vee (a \wedge b) = a$, $a \wedge (a \vee b) = a$.
+\end{itemize}
+\end{definition}
+
+\subsection{Решётки как упорядоченные множества}
+\begin{definition}
+Частично упорядоченное множество $(L, \le)$ называется \textbf{решёткой}, если для любых двух элементов $a, b \in L$ существуют:
+\begin{itemize}
+    \item \textbf{точная верхняя грань} (join, соединение) $a \vee b$, т.е. наименьший элемент среди всех верхних граней множества $\{a,b\}$;
+    \item \textbf{точная нижняя грань} (meet, пересечение) $a \wedge b$, т.е. наибольший элемент среди всех нижних граней множества $\{a,b\}$.
+\end{itemize}
+\end{definition}
+
+\begin{remark}
+Данное определение эквивалентно алгебраическому определению решётки через операции $\vee$ и $\wedge$, удовлетворяющие законам идемпотентности, коммутативности, ассоциативности и поглощения. Покажем, что из существования точных граней следуют все эти свойства.
+\end{remark}
+
+\begin{stat}
+Пусть $(L, \le)$ — частично упорядоченное множество, в котором для любых $a, b \in L$ определены $a \vee b$ и $a \wedge b$ как точные грани. Тогда операции $\vee$ и $\wedge$ удовлетворяют:
+\begin{enumerate}
+    \item \textbf{Идемпотентность:} $a \vee a = a$, $a \wedge a = a$.
+    \item \textbf{Коммутативность:} $a \vee b = b \vee a$, $a \wedge b = b \wedge a$.
+    \item \textbf{Ассоциативность:} $(a \vee b) \vee c = a \vee (b \vee c)$, $(a \wedge b) \wedge c = a \wedge (b \wedge c)$.
+    \item \textbf{Законы поглощения:} $a \vee (a \wedge b) = a$, $a \wedge (a \vee b) = a$.
+\end{enumerate}
+\end{stat}
+
+\begin{proof}
+\begin{enumerate}
+    \item \textbf{Идемпотентность.} Множество $\{a\}$ имеет точную верхнюю грань — сам $a$, так как $a \le a$ и любая верхняя грань должна быть $\ge a$. Следовательно, $a \vee a = a$. Аналогично для нижней грани.
+    \item \textbf{Коммутативность.} Точная верхняя грань множества $\{a,b\}$ не зависит от порядка элементов, поэтому $a \vee b = b \vee a$. То же для $\wedge$.
+    \item \textbf{Ассоциативность.} Покажем, что $(a \vee b) \vee c = a \vee (b \vee c)$. Обозначим $u = (a \vee b) \vee c$, $v = a \vee (b \vee c)$. Достаточно доказать, что $u$ — точная верхняя грань множества $\{a,b,c\}$. Действительно:
+        \begin{itemize}
+            \item $u$ — верхняя грань $\{a,b,c\}$: по определению $a \vee b \ge a, b$, и $u \ge a \vee b$, значит $u \ge a, b$. Также $u \ge c$.
+            \item Если $w$ — любая верхняя грань $\{a,b,c\}$, то $w \ge a,b \Rightarrow w \ge a \vee b$. Тогда $w \ge a \vee b$ и $w \ge c \Rightarrow w \ge (a \vee b) \vee c = u$.
+        \end{itemize}
+        Таким образом, $u$ — точная верхняя грань $\{a,b,c\}$. Аналогично $v$ — также точная верхняя грань $\{a,b,c\}$. В силу единственности точной верхней грани $u = v$. Для $\wedge$ доказательство симметрично.
+    \item \textbf{Законы поглощения.}
+        \begin{itemize}
+            \item Докажем $a \vee (a \wedge b) = a$. Заметим, что $a \wedge b \le a$ по определению нижней грани. Тогда $a$ является верхней гранью множества $\{a, a \wedge b\}$. Пусть $u = a \vee (a \wedge b)$ — точная верхняя грань этого множества. Тогда $u \le a$, так как $a$ — одна из верхних граней, а $u$ — наименьшая. С другой стороны, $u \ge a$ (поскольку $u$ — верхняя грань, в частности $u \ge a$). Следовательно, $u = a$.
+            \item Докажем $a \wedge (a \vee b) = a$. Здесь $a \le a \vee b$, поэтому $a$ является нижней гранью множества $\{a, a \vee b\}$. Пусть $l = a \wedge (a \vee b)$ — точная нижняя грань. Тогда $l \ge a$, так как $a$ — нижняя грань, а $l$ — наибольшая. С другой стороны, $l \le a$ (поскольку $l$ — нижняя грань, в частности $l \le a$). Отсюда $l = a$.
+        \end{itemize}
+\end{enumerate}
+\end{proof}
+
+\begin{remark}
+Обратно, если заданы операции $\vee$ и $\wedge$, удовлетворяющие указанным четырём законам, то можно восстановить частичный порядок, полагая $a \le b$ тогда и только тогда, когда $a \vee b = b$ (или $a \wedge b = a$). При таком определении операции становятся точными гранями. Таким образом, оба подхода эквивалентны.
+\end{remark}
+
+\subsection{Дистрибутивные и булевы решётки}
+\begin{definition}
+Решётка $L$ называется \textbf{дистрибутивной}, если для всех $a,b,c \in L$ выполняются тождества:
+$$a \vee (b \wedge c) = (a \vee b) \wedge (a \vee c),$$
+$$a \wedge (b \vee c) = (a \wedge b) \vee (a \wedge c).$$
+\end{definition}
+
+\begin{definition}
+\textbf{Булевой алгеброй} называется дистрибутивная решётка с наибольшим элементом $1$ и наименьшим элементом $0$, в которой каждый элемент $a$ имеет дополнение $\neg a$, такое что:
+$$a \vee \neg a = 1, \quad a \wedge \neg a = 0.$$
+\end{definition}
+
+\subsection*{Применение решёток}
+Решётки и булевы алгебры широко используются в математике и информатике:
+\begin{itemize}
+    \item \textbf{Математическая логика:} булевы алгебры являются моделями классической логики высказываний; операции соответствуют логическим связкам И, ИЛИ, НЕ.
+    \item \textbf{Теория множеств:} булеан $\mathcal{P}(X)$ с операциями объединения, пересечения и дополнения — классический пример булевой алгебры.
+    \item \textbf{Топология:} совокупность открытых множеств топологического пространства образует дистрибутивную решётку (полную и бесконечно-дистрибутивную — локаль).
+    \item \textbf{Computer science:} решётки используются в теории типов (domain theory), в криптографии (решеточные криптосистемы, например, LWE, LLL-алгоритм для редукции базиса решётки).
+    \item \textbf{Теория кодирования:} решётки применяются для построения эффективных кодов, исправляющих ошибки (например, решётка Лича).
+    \item \textbf{Анализ данных:} формальный анализ понятий (Formal Concept Analysis) основан на решёточных структурах, порождаемых бинарными отношениями.
+\end{itemize}
+
+\end{document}

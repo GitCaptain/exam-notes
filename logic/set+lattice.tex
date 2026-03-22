@@ -1,0 +1,446 @@
+\documentclass[10pt]{article}
+\input{header.tex}
+\begin{document}
+
+\section{Основные понятия теории множеств}
+\subsection{Наивная теория множеств и парадоксы}
+В основе наивной теории множеств лежит неограниченный принцип абстракции: $\{ x \mid P(x) \}$, который позволяет строить множество всех объектов, удовлетворяющих свойству $P$. Однако это приводит к парадоксам, например, к парадоксу Рассела: 
+$$ X := \{ x \mid x \notin x \}. $$
+Вопрос $X \in X$ ведёт к противоречию: если $X \in X$, то по определению $X \notin X$, и наоборот. Это показывает необходимость аксиоматического подхода.
+
+\subsection{Аксиоматика ZF (Цермело-Френкеля)}
+Теория множеств строится как теория первого порядка с единственным нелогическим бинарным символом $\in$.
+
+
+\begin{definition}[Включение и равенство]
+$A \subseteq B \equiv \forall x (x \in A \rightarrow x \in B)$; $A = B \equiv A \subseteq B \land B \subseteq A$.
+\end{definition}
+
+\subsection{Основные аксиомы ZF}
+\begin{definition}[Аксиома равенства]
+Равные множества содержатся в одних и тех же множествах. 
+$\forall x. \forall y. \forall z. x = y \with x \in z \rightarrow y \in z$.
+\end{definition}
+
+\begin{definition}[Аксиома пустого множества]
+Существует множество, не содержащее элементов:
+$$ \exists s \, \forall t \, \neg (t \in s). $$
+Обозначение: $\varnothing$.
+\end{definition}
+
+\begin{definition}[Аксиома пары]
+Для любых $a$ и $b$ существует множество $\{a, b\}$:
+$$ \forall a \, \forall b \, \exists s \, (a \in s \land b \in s \land \forall c (c \in s \rightarrow (c = a \lor c = b))). $$
+\end{definition}
+
+\begin{definition}[Аксиома объединения]
+Для любого непустого множества $x$ существует множество $\bigcup x$, состоящее из элементов элементов $x$:
+$$ \forall x \, (\exists y \, y \in x) \rightarrow \exists p \, \forall y \, (y \in p \leftrightarrow \exists s (y \in s \land s \in x)). $$
+\end{definition}
+
+\begin{definition}[Аксиома степени]
+Для любого $x$ существует множество $\mathcal{P}(x)$ всех его подмножеств:
+$$ \forall x \, \exists p \, \forall y \, (y \in p \leftrightarrow y \subseteq x). $$
+\end{definition}
+
+\begin{definition}[Схема аксиом выделения]
+Для любого множества $x$ и формулы $\varphi(y)$ (в которой $b$ не свободно) существует множество $\{ y \in x \mid \varphi(y) \}$:
+$$ \forall x \, \exists b \, \forall y \, (y \in b \leftrightarrow (y \in x \land \varphi(y))). $$
+\end{definition}
+
+\begin{theorem}[Существование синглетона]
+Для любого множества $X$ существует $\{X\}$ (аксиома пары: $\{X, X\}$).
+\end{theorem}
+
+\begin{definition}[Аксиома бесконечности]
+Существует множество $N$, такое что: $$
+\varnothing \in N \with \forall x. x \in N \rightarrow x \cup \{x\} \in N
+$$
+\end{definition}
+
+\subsection{Основные теоремы}
+\begin{theorem}[Единственность пустого множества]
+Пустое множество единственно.
+\end{theorem}
+\begin{proof}
+Пусть $s$ и $t$ — пустые множества. Тогда $s \subseteq t$ и $t \subseteq s$, следовательно, $s = t$.
+\end{proof}
+
+\begin{theorem}[Существование пересечения]
+Для любых $s, t$ существует $s \cap t = \{ x \in s \mid x \in t \}$.
+\end{theorem}
+
+\subsection{Упорядоченная пара}
+\begin{definition}[Упорядоченная пара по Куратовскому]
+$\langle a, b \rangle := \{ \{a\}, \{a, b\} \}$.
+\end{definition}
+
+\begin{theorem}
+$\langle a, b \rangle = \langle c, d \rangle$ тогда и только тогда, когда $a = c$ и $b = d$.
+\end{theorem}
+\begin{proof}
+Следует из анализа возможных случаев равенства двух множеств указанной структуры.
+\end{proof}
+
+\section{Операции над множествами}
+Помимо объединения, пересечения и степени, определим:
+\begin{definition}[Прямое произведение]
+$A \times B := \{ \langle a, b \rangle \mid a \in A, b \in B \}$.
+\end{definition}
+
+\begin{definition}[Дизъюнктное (разделённое) множество]
+Множество $x$ дизъюнктно, если его элементы попарно не пересекаются:
+$$ Dj(x) \equiv \forall y \, \forall z \, (y \in x \land z \in x \land y \ne z) \rightarrow \neg \exists t (t \in y \land t \in z). $$
+\end{definition}
+
+\begin{definition}[Прямое произведение семейства]
+Для дизъюнктного множества $a$ (семейства множеств) прямое произведение $\times a$ — это множество всех трансверсалей:
+$$ b \in \times a \iff \big( b \subseteq \bigcup a \land \forall y \in a \; \exists! x (x \in y \land x \in b) \big). $$
+\end{definition}
+
+\begin{definition}[Аксиома фундирования] В каждом непустом множестве есть элемент, не пересекающийся с ним:
+$$
+\forall x. x = \varnothing \vee \exists y. y \in x \with y \cap x = \varnothing
+$$
+    
+\end{definition}
+
+\begin{definition}[Схема аксиом подстановки] Пусть $S$~--- множество, $f$~--- функция (т.е. существует формула $\varphi(x, y) : \forall x \in S. \exists !y. \varphi(x, y)$). Тогда $f(S)$~--- множество.
+    
+\end{definition}
+
+\section{Вполне упорядоченные множества и ординалы}
+\subsection{Отношения порядка}
+\begin{definition}[Бинарное отношение]
+Бинарное отношение на множестве $A$ — это любое подмножество $R \subseteq A \times A$.
+\end{definition}
+
+Важнейшие свойства:
+\begin{itemize}
+    \item \emph{Рефлексивность}: $\forall a \in A \; (a,a) \in R$.
+    \item \emph{Симметричность}: $\forall a,b \in A \; (a,b) \in R \rightarrow (b,a) \in R$.
+    \item \emph{Транзитивность}: $\forall a,b,c \in A \; (a,b) \in R \land (b,c) \in R \rightarrow (a,c) \in R$.
+    \item \emph{Антисимметричность}: $\forall a,b \in A \; (a,b) \in R \land (b,a) \in R \rightarrow a = b$.
+\end{itemize}
+
+\begin{definition}[Нестрогий и строгий порядок]\;
+\begin{itemize}
+    \item \emph{Частичный порядок} (нестрогий): рефлексивность, антисимметричность, транзитивность.
+    \item \emph{Линейный порядок}: частичный + $\forall a,b \; (a \preceq b \lor b \preceq a)$.
+    \item \emph{Полный порядок} (вполне упорядоченное множество): линейный + любое непустое подмножество имеет наименьший элемент.
+\end{itemize}
+Для строгого порядка аналогично: иррефлексивность, транзитивность, трихотомия (для линейного).
+\end{definition}
+
+\begin{example}
+$\mathbb{N}$ вполне упорядочено, $\mathbb{Z}$ и $[0,1]$ — нет.
+\end{example}
+
+\subsection{Ординалы (порядковые числа)}
+\begin{definition}[Транзитивное множество]
+Множество $X$ транзитивно, если $\forall x \, \forall y \, (x \in y \land y \in X) \rightarrow x \in X$.
+\end{definition}
+
+\begin{definition}[Ординал]
+Ординал — это транзитивное множество, вполне упорядоченное отношением $\in$.
+\end{definition}
+
+\begin{definition}
+    $a' = a \cup \{a\}$
+\end{definition}
+
+\begin{example}
+$\varnothing$, $\varnothing' = \varnothing \cup \{\varnothing\} = \{\varnothing\}$, $\varnothing'' = \{\varnothing, \{\varnothing\}\}$ и т.д. — конечные ординалы.
+\end{example}
+
+\begin{definition}[Предельный ординал]
+Ординал $\lambda$ называется предельным, если $\lambda \ne \varnothing$ и не существует ординала $\alpha$ такого, что $\lambda = \alpha \cup \{\alpha\}$.
+\end{definition}
+
+\begin{theorem}[Существование $\omega$]
+Наименьший предельный ординал $\omega$ существует. Он является множеством всех конечных ординалов и совпадает с наименьшим индуктивным множеством (аксиома бесконечности).
+\end{theorem}
+
+\subsection{Операции над ординалами (порядковые типы)}
+\begin{definition} $\sup t$~--- минимальный ординал, содержащий все элементы из $t$.
+\end{definition}
+\begin{definition}
+    $$
+    a + b = \begin{cases}
+        a, b = 0\\
+        (a+c)', b = c'\\
+        \sup_{c\in b}(a + c)\text{, если $b$~--- предельный}
+    \end{cases}
+    $$
+\end{definition}
+Для ординалов аналогично определены умножение и возведение в степень, которые тоже не коммутативны. Например:
+$$ 1 + \omega = \omega, \qquad \omega + 1 > \omega, \qquad \omega \cdot 2 = \omega + \omega, \qquad 2 \cdot \omega = \omega. $$
+Порядковый тип вполне упорядоченного множества — это единственный ординал, изоморфный ему.
+
+\section{Счётные множества и кардинальные числа}
+\subsection{Равномощность}
+\begin{definition}[Отношения как функции]
+Бинарное отношение $R \subseteq A \times B$ называется:
+\begin{itemize}
+    \item \emph{функцией}, если $\forall x \in A \; \exists! y : \langle x, y \rangle \in R$;
+    \item \emph{инъекцией}, если $\forall x_1, x_2, y \; (\langle x_1, y \rangle \in R \land \langle x_2, y \rangle \in R) \rightarrow x_1 = x_2$;
+    \item \emph{сюръекцией} на $B$, если $\forall y \in B \; \exists x : \langle x, y \rangle \in R$;
+    \item \emph{биекцией}, если она инъективна и сюръективна.
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Равномощность и сравнение мощностей]
+$|A| = |B|$, если существует биекция $A \to B$.
+$|A| \le |B|$, если существует инъекция $A \to B$.
+\end{definition}
+
+\begin{theorem}[Кантора-Бернштейна]
+Если $|A| \le |B|$ и $|B| \le |A|$, то $|A| = |B|$.
+\end{theorem}
+
+\subsection{Счётные множества}
+Множество называется \emph{счётным}, если оно равномощно $\N = \omega$.
+
+\subsection{Кардинальные числа}
+\begin{definition}
+Кардинальное число — это наименьший ординал, не равномощный никакому меньшему ординалу.
+\end{definition}
+Таким образом, конечные ординалы — кардинальные числа. Мощность множества — это равномощное ему кардинальное число.
+
+\begin{definition}[Алефы и беты]
+$\aleph_0 := |\omega|$; $\aleph_{k+1} := \min\{ \alpha \mid \alpha \text{ — ординал}, \aleph_k < |\alpha| \}$.
+$\beth_0 := \aleph_0$; $\beth_{k+1} := |\mathcal{P}(\beth_k)|$.
+\end{definition}
+
+\begin{theorem}[Диагональный метод Кантора]
+$|\R| > |\N|$. В частности, $\beth_1 > \aleph_0$.
+\end{theorem}
+\begin{proof}
+Предположим, что существует биекция $f : \N \leftrightarrow [0,1)$. Построим число $\sigma = 0.\sigma_0\sigma_1\dots \in [0; 1)$, где $\sigma_k \ne (f(k))_k$ (десятичный разряд). Тогда $\sigma$ не попадает в перечисление.
+\end{proof}
+
+\begin{theorem}[Кантора]
+Для любого множества $S$: $|\mathcal{P}(S)| > |S|$.
+\end{theorem}
+\begin{proof}
+Предположим, есть биекция $f: S \leftrightarrow \mathcal{P}(S)$. Определим $\sigma = \{ x \in S \mid x \notin f(x) \}$. Рассмотрим $f^{-1}(\sigma)$. Если $f(t) = \sigma$, то $t \in f(t) \iff t \notin \sigma$, а значит не существует такой биекции $f$.
+\end{proof}
+
+\section{Отношения и их свойства}
+\subsection{Основные определения}
+
+\subsection{Замыкания отношений}
+\begin{definition}[Рефлексивное, симметричное, транзитивное замыкание]
+Для отношения $R$ на $A$:
+\begin{itemize}
+    \item \emph{Рефлексивное замыкание} $R^r = R \cup \{ (a,a) \mid a \in A \}$;
+    \item \emph{Симметричное замыкание} $R^s = R \cup R^{-1}$, где $R^{-1} = \{ (b,a) \mid (a,b) \in R \}$;
+    \item \emph{Транзитивное замыкание} $R^+ = \bigcup_{n \ge 1} R^n$, где $R^{n+1} = R^n \circ R$;
+    \item \emph{Рефлексивно-транзитивное замыкание} $R^* = R^+ \cup \{ (a,a) \mid a \in A \}$.
+\end{itemize}
+\end{definition}
+Эти замыкания являются наименьшими (по включению) отношениями, содержащими $R$ и обладающими соответствующим свойством.
+
+\section{Отношение эквивалентности и классы эквивалентности}
+\subsection{Определение}
+\begin{definition}
+Отношение $R$ на $A$ называется \emph{отношением эквивалентности}, если оно рефлексивно, симметрично и транзитивно.
+\end{definition}
+
+\subsection{Классы эквивалентности}
+\begin{definition}[Класс эквивалентности]
+Для элемента $a \in A$ класс эквивалентности:
+$$ [a]_R = \{ x \in A \mid (a,x) \in R \}. $$
+\end{definition}
+
+\begin{theorem}
+Классы эквивалентности образуют разбиение множества $A$: они непусты, попарно не пересекаются, и их объединение равно $A$.
+\end{theorem}
+\begin{proof}
+Рефлексивность даёт $a \in [a]$, следовательно, непустоту. Симметричность и транзитивность обеспечивают, что если $[a] \cap [b] \ne \varnothing$, то $[a] = [b]$. Объединение всех классов, очевидно, есть $A$.
+\end{proof}
+
+\begin{definition}[Фактормножество]
+Множество всех классов эквивалентности называется фактормножеством $A$ по $R$ и обозначается $A / R$.
+\end{definition}
+
+\subsection{Примеры}
+\begin{example}
+Отношение равенства $=$ на любом множестве — отношение эквивалентности.
+\end{example}
+\begin{example}
+Отношение сравнения по модулю $m$ на $\Z$: $a \sim b \iff a \equiv b \pmod{m}$. Классы эквивалентности — $\Z/m\Z$.
+\end{example}
+\begin{example}
+Отношение равномощности между множествами — отношение эквивалентности (в универсуме множеств).
+\end{example}
+
+\section{Частично упорядоченные множества, решётки}
+\subsection{Отношения порядка}
+Напомним, что бинарное отношение $\preceq$ на множестве $X$ называется \emph{частичным порядком}, если оно рефлексивно, антисимметрично и транзитивно. Пара $\langle X, \preceq \rangle$ называется \emph{частично упорядоченным множеством} (ч.у.м.). Если дополнительно $\forall a,b\in X\; (a\preceq b \lor b\preceq a)$, порядок называют \emph{линейным} (или \emph{полным}).
+
+\begin{example}
+\begin{itemize}
+    \item $\langle \mathbb{N}, \le \rangle$ — линейный порядок.
+    \item $\langle \mathcal{P}(S), \subseteq \rangle$ — частичный (не линейный при $|S|>1$).
+    \item $\langle \mathbb{N}, \mid \rangle$ ($a\mid b$ означает «$a$ делит $b$») — частичный порядок.
+\end{itemize}
+\end{example}
+
+\subsection{Экстремальные элементы и грани}
+Для $X \subseteq \mathcal{U}$ (ч.у.м.) определим:
+\begin{itemize}
+    \item \emph{Нижние грани}: $\operatorname{lwb}_{\mathcal{U}} X = \{ y\in\mathcal{U} \mid \forall x\in X\; y\preceq x \}$.
+    \item \emph{Верхние грани}: $\operatorname{upb}_{\mathcal{U}} X = \{ y\in\mathcal{U} \mid \forall x\in X\; x\preceq y \}$.
+\end{itemize}
+Элемент $m\in X$ называется:
+\begin{itemize}
+    \item \emph{минимальным}, если $\forall y\in X\; (y\preceq m \Rightarrow y=m)$;
+    \item \emph{максимальным}, если $\forall y\in X\; (m\preceq y \Rightarrow y=m)$;
+    \item \emph{наименьшим} (обозначается $0$ или $\bot$), если $\forall y\in X\; 0\preceq y$;
+    \item \emph{наибольшим} ($1$ или $\top$), если $\forall y\in X\; y\preceq 1$.
+\end{itemize}
+Если множество всех нижних (верхних) граней имеет наибольший (наименьший) элемент, он называется \emph{инфимумом} ($\inf X$) и \emph{супремумом} ($\sup X$) соответственно. Инфимум и супремум для двух элементов $a,b$ обозначают $a \cdot b$ и $a + b$.
+
+\begin{example}
+В $\langle \mathbb{R}, \le \rangle$: $\inf\{1,2\}=1$, $\sup\{1,2\}=2$; $\inf\{1,1.4,1.41,\dots\}=\sqrt{2}$, но $\sup$ в $\mathbb{Q}$ не существует.
+\end{example}
+
+\subsection{Полурешётки и решётки}
+\begin{definition}
+Ч.у.м. $\langle X, \preceq \rangle$ называется \emph{решёткой}, если для любых $a,b\in X$ существуют $a\cdot b = \inf\{a,b\}$ и $a+b = \sup\{a,b\}$.
+\end{definition}
+Если существует только $\inf$ (или только $\sup$), то говорят о \emph{полурешётке} (нижней или верхней). Операции $\cdot$ и $+$ в решётке обладают свойствами:
+\begin{itemize}
+    \item идемпотентность: $a\cdot a = a$, $a+a = a$;
+    \item коммутативность: $a\cdot b = b\cdot a$, $a+b = b+a$;
+    \item ассоциативность: $(a\cdot b)\cdot c = a\cdot(b\cdot c)$, $(a+b)+c = a+(b+c)$;
+    \item поглощение: $a\cdot(a+b)=a$, $a+(a\cdot b)=a$.
+\end{itemize}
+
+\begin{example}\;
+\begin{itemize}
+    \item $\langle \mathcal{P}(S), \subseteq \rangle$ — решётка: $A\cdot B = A\cap B$, $A+B = A\cup B$.
+    \item $\langle \mathbb{N}, \mid \rangle$ — решётка: $a\cdot b = \gcd(a,b)$, $a+b = \operatorname{lcm}(a,b)$.
+    \item Любое линейно упорядоченное множество — решётка: $a\cdot b = \min(a,b)$, $a+b = \max(a,b)$.
+\end{itemize}
+\end{example}
+
+\begin{theorem}[Идемпотентность]
+Для любого элемента $a$ решётки: $a \cdot a = a$ и $a + a = a$.
+\end{theorem}
+\begin{proof}
+По определению, $a \cdot a = \inf\{a,a\}$. Элемент $a$ является нижней гранью $\{a,a\}$ (так как $a \preceq a$), и если $b$ — любая нижняя грань, то $b \preceq a$. Следовательно, $a$ — наибольшая нижняя грань, т.е. $a \cdot a = a$. Аналогично для $a + a = \sup\{a,a\} = a$.
+\end{proof}
+
+\begin{theorem}[Коммутативность]
+Для любых $a,b$: $a \cdot b = b \cdot a$ и $a + b = b + a$.
+\end{theorem}
+\begin{proof}
+Следует из того, что $\inf\{a,b\} = \inf\{b,a\}$ (множества совпадают), и аналогично для $\sup$.
+\end{proof}
+
+\begin{theorem}[Ассоциативность]
+Для любых $a,b,c$: $(a \cdot b) \cdot c = a \cdot (b \cdot c)$ и $(a + b) + c = a + (b + c)$.
+\end{theorem}
+\begin{proof}
+Докажем для $\cdot$. Покажем, что $(a \cdot b) \cdot c = \inf\{a,b,c\}$. Действительно, $a \cdot b = \inf\{a,b\}$; обозначим $d = a \cdot b$. Тогда $d \preceq a$, $d \preceq b$, и для любого $x$ с $x \preceq a$, $x \preceq b$ имеем $x \preceq d$. Теперь $(a \cdot b) \cdot c = d \cdot c = \inf\{d,c\}$. Нужно проверить, что $\inf\{d,c\}$ есть $\inf\{a,b,c\}$:
+\begin{itemize}
+    \item $\inf\{d,c\} \preceq d \preceq a$, $\inf\{d,c\} \preceq d \preceq b$, $\inf\{d,c\} \preceq c$, значит, это нижняя грань $\{a,b,c\}$.
+    \item Если $y$ — любая нижняя грань $\{a,b,c\}$, то $y \preceq a$ и $y \preceq b$, поэтому $y \preceq d$; также $y \preceq c$, следовательно, $y \preceq \inf\{d,c\}$.
+\end{itemize}
+Таким образом, $(a \cdot b) \cdot c = \inf\{a,b,c\}$. Аналогично $a \cdot (b \cdot c) = \inf\{a,b,c\}$. Равенство для $+$ доказывается двойственным образом.
+\end{proof}
+
+\begin{theorem}[Поглощение]
+Для любых $a,b$: $a \cdot (a + b) = a$ и $a + (a \cdot b) = a$.
+\end{theorem}
+\begin{proof}
+По определению, $a + b = \sup\{a,b\}$, поэтому $a \preceq a+b$. Следовательно, $a$ является нижней гранью множества $\{a, a+b\}$, и при этом $a$ — наибольшая нижняя грань, так как любая нижняя грань $x$ должна удовлетворять $x \preceq a$. Значит, $a \cdot (a+b) = a$. Второе равенство доказывается двойственно.
+\end{proof}
+
+\subsection{Дистрибутивность, псевдодополнение, булевы алгебры}
+\begin{definition}
+Решётка называется \emph{дистрибутивной}, если для всех $a,b,c$ выполняется
+$$ a\cdot(b+c) = (a\cdot b)+(a\cdot c). $$
+\end{definition}
+
+\begin{definition}
+В решётке с наименьшим элементом $0$ \emph{псевдодополнением} элемента $a$ относительно $b$ называется
+$$ a\rightarrow b := \sup\{ x \mid a\cdot x \preceq b \}. $$
+Если такой элемент существует для всех $a,b$, решётка называется \emph{импликативной}.
+\end{definition}
+
+\begin{lemma}
+В любой импликативной решётке существует наибольший элемент $1 = a\rightarrow a$.
+\end{lemma}
+\begin{proof}
+$a\rightarrow a = \sup\{ x \mid a\cdot x \preceq a \}$. Поскольку $a\cdot x \preceq a$ всегда истинно, это множество — всё $X$, а его супремум (если существует) — наибольший элемент. Существование гарантируется определением импликативной решётки.
+\end{proof}
+
+\begin{definition}
+Импликативная решётка с $0$ называется \emph{псевдобулевой алгеброй} (или \emph{алгеброй Гейтинга}). В ней определяют $\neg a := a\rightarrow 0$. Если дополнительно $a + \neg a = 1$ для всех $a$, то решётка называется \emph{булевой алгеброй}.
+\end{definition}
+
+\begin{example}
+\begin{itemize}
+    \item $\langle \mathcal{P}(S), \subseteq \rangle$ — булева алгебра: $a\rightarrow b = (S\setminus a)\cup b$, $\neg a = S\setminus a$.
+    \item $\langle \Omega, \subseteq \rangle$ (топология на $X$) — псевдобулева алгебра: $a\rightarrow b = ((X\setminus a)\cup b)^\circ$ (внутренность).
+\end{itemize}
+\end{example}
+
+\subsection{Связь с логикой}
+Псевдобулевы алгебры являются моделями интуиционистского исчисления высказываний, а булевы — классического. Ключевой пример — \emph{алгебра Линденбаума} $\mathcal{L}$: её элементами служат классы эквивалентности формул по отношению $\alpha\approx\beta$ (если $\alpha\vdash\beta$ и $\beta\vdash\alpha$ в интуиционистской логике). Операции задаются через логические связки, а порядок — через выводимость:
+$$ [\alpha] \preceq [\beta] \iff \alpha\vdash\beta. $$
+Тогда $\mathcal{L}$ — псевдобулева алгебра, и она является канонической моделью: формула $\alpha$ доказуема тогда и только тогда, когда $[\alpha] = 1$ в $\mathcal{L}$. Это даёт доказательство полноты интуиционистского исчисления относительно псевдобулевых алгебр.
+
+\subsection{Алгебраическое определение полурешёток и решёток}
+Полурешётки и решётки могут быть определены не только через порядок, но и чисто алгебраически — как множества с бинарными операциями, удовлетворяющими определённым аксиомам. Такой подход удобен в универсальной алгебре.
+
+\begin{definition}
+\textit{Полурешёткой} называется алгебраическая структура $\langle X, \ast \rangle$, где $\ast$ — бинарная операция, удовлетворяющая для всех $a,b,c\in X$:
+\begin{enumerate}
+    \item \textbf{идемпотентность}: $a \ast a = a$;
+    \item \textbf{коммутативность}: $a \ast b = b \ast a$;
+    \item \textbf{ассоциативность}: $(a \ast b) \ast c = a \ast (b \ast c)$.
+\end{enumerate}
+Если операция обозначается $\cdot$ ($\inf$), то это \textit{нижняя полурешётка}; если $+$ ($\sup$), то \textit{верхняя полурешётка}.
+\end{definition}
+
+Из этих аксиом можно восстановить порядок: для нижней полурешётки полагают $a \preceq b \iff a \cdot b = a$, а для верхней — $a \preceq b \iff a + b = b$.
+
+\begin{theorem}
+Для нижней полурешётки $\langle X, \cdot \rangle$ отношение $a \preceq b \stackrel{\text{def}}{\iff} a \cdot b = a$ является частичным порядком.
+\end{theorem}
+\begin{proof}\;
+\begin{itemize}
+    \item \textit{Рефлексивность}: $a \cdot a = a$ по идемпотентности, значит $a \preceq a$.
+    \item \textit{Антисимметричность}: если $a \preceq b$ и $b \preceq a$, то $a \cdot b = a$ и $b \cdot a = b$. По коммутативности $a = a \cdot b = b \cdot a = b$.
+    \item \textit{Транзитивность}: если $a \preceq b$ и $b \preceq c$, то $a \cdot b = a$ и $b \cdot c = b$. Тогда $a \cdot c = (a \cdot b) \cdot c = a \cdot (b \cdot c) = a \cdot b = a$, откуда $a \preceq c$.
+\end{itemize}
+\end{proof}
+
+Аналогично для верхней полурешётки: $a \preceq b \iff a + b = b$ задаёт порядок.
+
+\begin{definition}
+\textit{Решёткой} называется алгебраическая структура $\langle X, \cdot, + \rangle$ с двумя бинарными операциями, где $\langle X, \cdot \rangle$ и $\langle X, + \rangle$ — полурешётки, и дополнительно выполняются \textit{законы поглощения}:
+$$ a \cdot (a + b) = a, \qquad a + (a \cdot b) = a. $$
+\end{definition}
+
+Законы поглощения связывают обе операции. Из них следует, что порядок, восстановленный по $\cdot$ и по $+$, совпадает, и операции $\cdot$ и $+$ являются в точности инфимумом и супремумом относительно этого порядка.
+
+\begin{theorem}
+Алгебраическое определение решётки эквивалентно определению через частичный порядок с существованием $\inf$ и $\sup$ для любых двух элементов.
+\end{theorem}
+\begin{proof}[Схема доказательства]
+\begin{itemize}
+    \item[($\Rightarrow$)] Если решётка задана как ч.у.м. с $\inf$ и $\sup$, то операции $\cdot$ и $+$ удовлетворяют идемпотентности, коммутативности, ассоциативности (доказано ранее) и законам поглощения (также доказано).
+    \item[($\Leftarrow$)] Пусть $\langle X, \cdot, + \rangle$ — алгебраическая решётка. Введём порядок: $a \preceq b \iff a \cdot b = a$. Из законов поглощения следует, что $a \cdot b = a \iff a + b = b$. Проверим, что $a \cdot b = \inf\{a,b\}$: $a\cdot b$ является нижней гранью, так как $(a\cdot b)\cdot a = a\cdot b$ (следует из ассоциативности и коммутативности), значит $a\cdot b \preceq a$, аналогично $\preceq b$. Если $c \preceq a$ и $c \preceq b$, то $c\cdot a = c$ и $c\cdot b = c$, тогда $c\cdot (a\cdot b) = (c\cdot a)\cdot b = c\cdot b = c$, следовательно $c \preceq a\cdot b$. Аналогично доказывается, что $a+b = \sup\{a,b\}$.
+\end{itemize}
+\end{proof}
+
+Таким образом, решётки и полурешётки допускают два равносильных подхода: теоретико-порядковый (через частичный порядок и существование точных граней) и алгебраический (через операции, удовлетворяющие тождествам).
+
+\end{document}
+
+\end{document}
