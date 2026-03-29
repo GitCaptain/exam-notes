@@ -1,0 +1,265 @@
+\documentclass[10pt]{article}
+\input{header.tex}
+
+
+\begin{document}
+
+\section{Случайные величины}
+
+\begin{definition}
+\textbf{Случайная величина} (с.в.) — это функция $X: \Omega \to \mathbb{R}$, определённая на пространстве элементарных исходов $\Omega$. Для каждого вещественного числа $x$ множество $\{\omega: X(\omega) \le x\}$ должно быть событием (т.е. иметь вероятность). Это условие называется измеримостью и гарантирует, что можно говорить о вероятностях вида $\Pr(X \le x)$.
+\end{definition}
+
+\subsection{Дискретные случайные величины}
+Случайная величина называется \textbf{дискретной}, если множество её возможных значений конечно или счётно.
+
+\begin{definition}
+\textbf{Функция вероятности} (закон распределения) дискретной с.в. $X$ задаётся как $p_X(x) = \Pr(X = x)$. 
+Свойства:
+\begin{enumerate}
+    \item $p_X(x) \ge 0$ для всех $x$,
+    \item $\sum_{x} p_X(x) = 1$.
+\end{enumerate}
+\end{definition}
+
+\subsubsection*{Основные дискретные распределения}
+\begin{itemize}
+    \item \textbf{Бернулли} $X \sim \text{Bern}(p)$: $p_X(1)=p$, $p_X(0)=1-p$.
+    \item \textbf{Биномиальное} $X \sim \text{Bin}(n, p)$: число успехов в $n$ испытаниях Бернулли. $p_X(k) = \binom{n}{k} p^k (1-p)^{n-k}$.
+    \item \textbf{Геометрическое} $X \sim \text{Geom}(p)$: число испытаний до первого успеха. $p_X(k) = p(1-p)^{k-1}$, $k=1,2,\dots$
+\end{itemize}
+
+\subsection{Непрерывные случайные величины}
+Случайная величина называется \textbf{непрерывной}, если существует неотрицательная функция $f_X(x)$ (плотность вероятности) такая, что для любых $a \le b$:
+\[
+\Pr(a \le X \le b) = \int_{a}^{b} f_X(x) \, dx.
+\]
+Свойства плотности: $f_X(x) \ge 0$, $\int_{-\infty}^{+\infty} f_X(x) \, dx = 1$.
+
+\begin{definition}
+\textbf{Функция распределения} $F_X(x) = \Pr(X \le x)$. Для непрерывной с.в. $F_X(x) = \int_{-\infty}^{x} f_X(t) \, dt$, $f_X(x) = F'_X(x)$.
+\end{definition}
+
+\subsection{Случайные векторы (многомерные с.в.)}
+\begin{definition}
+\textbf{Случайный вектор} $\mathbf{X} = (X_1, \dots, X_n)^T$ — это набор случайных величин, определённых на одном вероятностном пространстве. Он называется:
+\begin{itemize}
+    \item \textbf{дискретным}, если все $X_i$ дискретны, и его распределение задаётся совместной функцией вероятности:
+    \[
+    p_{\mathbf{X}}(\mathbf{x}) = \Pr(X_1 = x_1, \dots, X_n = x_n).
+    \]
+    \item \textbf{непрерывным}, если существует совместная плотность $f_{\mathbf{X}}(\mathbf{x})$ такая, что для любого измеримого множества $A \subset \mathbb{R}^n$:
+    \[
+    \Pr(\mathbf{X} \in A) = \int_A f_{\mathbf{X}}(\mathbf{x}) \, d\mathbf{x}.
+    \]
+\end{itemize}
+\end{definition}
+
+\textbf{Маргинальные распределения} получаются суммированием (для дискретных) или интегрированием (для непрерывных) по остальным переменным.
+
+\section{Характеристики распределений}
+
+\begin{definition}
+\textbf{Математическое ожидание} (среднее значение) с.в. $X$:
+\begin{itemize}
+    \item Для дискретной с.в.: $E[X] = \sum_x x \, p_X(x)$.
+    \item Для непрерывной с.в.: $E[X] = \int_{-\infty}^{+\infty} x f_X(x) \, dx$.
+    \item Для случайного вектора: $E[\mathbf{X}] = (E[X_1], \dots, E[X_n])^T$.
+\end{itemize}
+\end{definition}
+
+\subsection*{Свойства математического ожидания}
+\begin{enumerate}
+    \item \textbf{Неотрицательность:} если $X \ge 0$ (т.е. $X(\omega) \ge 0$ для всех $\omega$), то $E[X] \ge 0$.
+    \item \textbf{Ограниченность:} если $a \le X \le b$, то $a \le E[X] \le b$.
+    \item \textbf{Матожидание константы:} $E[c] = c$ для любой константы $c \in \mathbb{R}$.
+    \item \textbf{Линейность:} $E[aX + bY] = aE[X] + bE[Y]$ для любых констант $a, b$.
+\end{enumerate}
+
+\subsection*{Математическое ожидание произведения независимых случайных величин}
+\begin{theorem}
+Если $X$ и $Y$ — независимые случайные величины, то
+\[
+E[XY] = E[X] \cdot E[Y].
+\]
+\end{theorem}
+\begin{proof}
+Для дискретного случая:
+\begin{align*}
+    E[XY] &= \sum_{x,y} xy\, p_{X,Y}(x,y) = \sum_{x,y} xy\, p_X(x)p_Y(y) \\
+    &= \left(\sum_x x p_X(x)\right)\left(\sum_y y p_Y(y)\right) = E[X]E[Y].
+\end{align*}
+Для непрерывного случая:
+\begin{align*}
+E[XY] &= \iint xy\, f_{X,Y}(x,y)\,dx\,dy = \iint xy\, f_X(x)f_Y(y)\,dx\,dy \\
+&= \left(\int x f_X(x)\,dx\right)\left(\int y f_Y(y)\,dy\right) = E[X]E[Y].
+\end{align*}
+\end{proof}
+
+\begin{definition}
+\textbf{Дисперсия} — мера разброса: $\operatorname{Var}(X) = E[(X - E[X])^2] = E[X^2] - (E[X])^2$.
+\end{definition}
+Свойства: $\operatorname{Var}(aX + b) = a^2 \operatorname{Var}(X)$.
+
+\subsection*{Дисперсия суммы независимых случайных величин}
+\begin{theorem}
+Если $X$ и $Y$ — независимые случайные величины, то
+\[
+\operatorname{Var}(X+Y) = \operatorname{Var}(X) + \operatorname{Var}(Y).
+\]
+\end{theorem}
+\begin{proof}
+Пусть $\mu_X = E[X]$, $\mu_Y = E[Y]$. Тогда
+\[
+\begin{aligned}
+\operatorname{Var}(X+Y) &= E\bigl[((X+Y) - (\mu_X+\mu_Y))^2\bigr] \\
+&= E\bigl[(X-\mu_X)^2 + (Y-\mu_Y)^2 + 2(X-\mu_X)(Y-\mu_Y)\bigr] \\
+&= \operatorname{Var}(X) + \operatorname{Var}(Y) + 2E[(X-\mu_X)(Y-\mu_Y)].
+\end{aligned}
+\]
+Для независимых $X$ и $Y$:
+\[
+E[(X-\mu_X)(Y-\mu_Y)] = E[X-\mu_X] \cdot E[Y-\mu_Y] = 0 \cdot 0 = 0.
+\]
+Следовательно, $\operatorname{Var}(X+Y) = \operatorname{Var}(X) + \operatorname{Var}(Y)$.
+\end{proof}
+По индукции свойство распространяется на сумму любого конечного числа независимых случайных величин:
+\[
+\operatorname{Var}\left(\sum_{i=1}^n X_i\right) = \sum_{i=1}^n \operatorname{Var}(X_i).
+\]
+
+\subsection{Дисперсия случайного вектора}
+Для случайного вектора $\mathbf{X} = (X_1, \dots, X_n)^T$ вводят \textbf{ковариационную матрицу}:
+\[
+\Sigma = \operatorname{Cov}(\mathbf{X}) = E[(\mathbf{X} - E[\mathbf{X}])(\mathbf{X} - E[\mathbf{X}])^T].
+\]
+Её элементы: $\Sigma_{ij} = \operatorname{Cov}(X_i, X_j) = E[(X_i - E[X_i])(X_j - E[X_j])]$.
+Свойства:
+\begin{itemize}
+    \item $\Sigma$ — симметричная, неотрицательно определённая матрица.
+    \item $\operatorname{Var}(X_i) = \Sigma_{ii}$.
+    \item Для линейного преобразования $\mathbf{Y} = A\mathbf{X} + \mathbf{b}$ (где $A$ — матрица, $\mathbf{b}$ — вектор) выполняется:
+    \[
+    E[\mathbf{Y}] = A E[\mathbf{X}] + \mathbf{b}, \qquad \operatorname{Cov}(\mathbf{Y}) = A \Sigma A^T.
+    \]
+\end{itemize}
+
+\subsection{Независимость случайных величин}
+\begin{definition}
+Случайные величины $X_1, \dots, X_n$ (дискретные или непрерывные) называются \textbf{независимыми}, если для любых чисел $x_1, \dots, x_n$ выполняется:
+\[
+\Pr(X_1 \le x_1, \dots, X_n \le x_n) = \Pr(X_1 \le x_1) \cdots \Pr(X_n \le x_n).
+\]
+Для дискретных с.в. это эквивалентно $p_{\mathbf{X}}(\mathbf{x}) = p_{X_1}(x_1) \cdots p_{X_n}(x_n)$; для непрерывных — $f_{\mathbf{X}}(\mathbf{x}) = f_{X_1}(x_1) \cdots f_{X_n}(x_n)$.
+\end{definition}
+
+\textbf{Следствия независимости:}
+\begin{itemize}
+    \item $E[X_1 X_2] = E[X_1]E[X_2]$,
+    \item $\operatorname{Var}(X_1 + X_2) = \operatorname{Var}(X_1) + \operatorname{Var}(X_2)$,
+    \item любые функции от непересекающихся наборов независимых с.в. также независимы.
+\end{itemize}
+
+\section{Основные непрерывные распределения}
+
+\subsection{Равномерное распределение}
+$X \sim U(a, b)$ на интервале $[a, b]$:
+\[
+f_X(x) = \frac{1}{b-a}, \quad x \in [a,b]; \qquad E[X] = \frac{a+b}{2}, \quad \operatorname{Var}(X) = \frac{(b-a)^2}{12}.
+\]
+\textit{Доказательство:} $E[X] = \int_a^b x \frac{1}{b-a}dx = \frac{a+b}{2}$, $E[X^2] = \int_a^b x^2 \frac{1}{b-a}dx = \frac{a^2+ab+b^2}{3}$, откуда $\operatorname{Var}(X)=E[X^2]-(E[X])^2 = \frac{(b-a)^2}{12}$.
+
+\subsection{Нормальное (гауссовское) распределение}
+\begin{definition}
+$X \sim N(\mu, \sigma^2)$ имеет плотность:
+\[
+f_X(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right), \quad x \in \mathbb{R}.
+\]
+Параметры: $\mu = E[X]$, $\sigma^2 = \operatorname{Var}(X)$.
+\end{definition}
+
+\textbf{Свойства:}
+\begin{enumerate}
+    \item \textbf{Линейное преобразование:} если $X \sim N(\mu, \sigma^2)$, то $Y = aX + b \sim N(a\mu + b, a^2\sigma^2)$.
+    \textit{Доказательство:} Для $a>0$ функция распределения $F_Y(y) = \Pr(X \le \frac{y-b}{a}) = F_X(\frac{y-b}{a})$. Дифференцируя, $f_Y(y) = \frac{1}{a} f_X(\frac{y-b}{a})$, что после подстановки даёт плотность $N(a\mu+b, a^2\sigma^2)$. Для $a<0$ аналогично.
+    \item Стандартное нормальное распределение $N(0,1)$ имеет плотность $\phi(x) = \frac{1}{\sqrt{2\pi}} e^{-x^2/2}$ и функцию распределения $\Phi(x)$.
+\end{enumerate}
+
+\subsection{Многомерное нормальное распределение}
+\begin{definition}
+Случайный вектор $\mathbf{X} = (X_1, \dots, X_n)^T$ имеет $n$-мерное нормальное распределение $N_n(\boldsymbol{\mu}, \Sigma)$, если его плотность:
+\[
+f_{\mathbf{X}}(\mathbf{x}) = \frac{1}{(2\pi)^{n/2} |\Sigma|^{1/2}} \exp\left(-\frac{1}{2} (\mathbf{x} - \boldsymbol{\mu})^T \Sigma^{-1} (\mathbf{x} - \boldsymbol{\mu})\right),
+\]
+где $\boldsymbol{\mu} = E[\mathbf{X}]$, $\Sigma = \operatorname{Cov}(\mathbf{X})$ — положительно определённая матрица ковариаций.
+\end{definition}
+\textbf{Свойства}:
+\begin{itemize}
+    \item Любая линейная комбинация компонент имеет одномерное нормальное распределение.
+    \item Компоненты независимы тогда и только тогда, когда ковариационная матрица диагональна.
+\end{itemize}
+
+\subsection{Логнормальное распределение}
+Если $\ln X \sim N(\mu, \sigma^2)$, то $X$ имеет логнормальное распределение. Плотность:
+\[
+f_X(x) = \frac{1}{x \sigma \sqrt{2\pi}} \exp\left(-\frac{(\ln x - \mu)^2}{2\sigma^2}\right), \quad x > 0.
+\]
+Применяется для моделирования положительных величин с тяжёлым хвостом (доходы, цены).
+
+\section{Распределения, связанные с нормальным}
+
+\subsection{Распределение хи-квадрат ($\chi^2$)}
+\begin{definition}
+Пусть $Z_1, \dots, Z_k \sim N(0,1)$ независимы. Тогда
+\[
+\chi^2_k = Z_1^2 + \dots + Z_k^2
+\]
+имеет распределение хи-квадрат с $k$ степенями свободы. Плотность:
+\[
+f(x) = \frac{1}{2^{k/2} \Gamma(k/2)} x^{k/2 - 1} e^{-x/2}, \quad x > 0.
+\]
+Свойства: $E[\chi^2_k] = k$, $\operatorname{Var}(\chi^2_k) = 2k$.
+\end{definition}
+
+\subsection{Распределение Стьюдента ($t$)}
+\begin{definition}
+Пусть $Z \sim N(0,1)$ и $\chi^2_k$ независимы. Тогда
+\[
+t_k = \frac{Z}{\sqrt{\chi^2_k / k}}
+\]
+имеет распределение Стьюдента с $k$ степенями свободы. Плотность симметрична, при $k \to \infty$ сходится к $N(0,1)$.
+\end{definition}
+
+\subsection{Распределение Фишера ($F$)}
+\begin{definition}
+Пусть $\chi^2_{k_1}$ и $\chi^2_{k_2}$ независимы. Тогда
+\[
+F_{k_1, k_2} = \frac{\chi^2_{k_1} / k_1}{\chi^2_{k_2} / k_2}
+\]
+имеет распределение Фишера (Снедекора–Фишера) со степенями свободы $k_1$ и $k_2$.
+\end{definition}
+
+\subsection*{Примеры использования в проверке гипотез}
+\begin{itemize}
+    \item \textbf{$\chi^2$-критерий:} проверка согласия (соответствия эмпирического распределения теоретическому) или независимости признаков в таблице сопряжённости. Статистика имеет асимптотическое распределение $\chi^2$ с соответствующим числом степеней свободы.
+    \item \textbf{$t$-критерий:} проверка равенства среднего выборки заданному значению (при неизвестной дисперсии) или равенства средних двух независимых выборок. Статистика имеет распределение Стьюдента.
+    \item \textbf{$F$-критерий:} сравнение дисперсий двух нормальных выборок; в дисперсионном анализе (ANOVA) — проверка равенства средних нескольких групп. Статистика имеет распределение Фишера.
+\end{itemize}
+
+\section{Квантили}
+
+\begin{definition}
+Для одномерной случайной величины \textbf{квантиль уровня $\alpha$} ($0 < \alpha < 1$) — это значение $x_\alpha$, такое что $F(x_\alpha) = \alpha$. Для непрерывных распределений $x_\alpha = F^{-1}(\alpha)$.
+\end{definition}
+
+Для многомерных распределений понятие квантиля обобщается как \textbf{множество наименьшего объёма}, содержащего заданную вероятность $\alpha$. В случае непрерывного случайного вектора часто рассматривают \textbf{доверительные области} вида
+\[
+\{\mathbf{x} : f_{\mathbf{X}}(\mathbf{x}) \ge c_\alpha\},
+\]
+где $c_\alpha$ выбирается так, чтобы вероятность попадания в эту область равнялась $\alpha$. Для многомерного нормального распределения $N_n(\boldsymbol{\mu}, \Sigma)$ область уровня $\alpha$ является эллипсоидом:
+\[
+(\mathbf{x} - \boldsymbol{\mu})^T \Sigma^{-1} (\mathbf{x} - \boldsymbol{\mu}) \le \chi^2_n(\alpha),
+\]
+где $\chi^2_n(\alpha)$ — квантиль уровня $\alpha$ распределения $\chi^2$ с $n$ степенями свободы. Такие области используются для построения многомерных доверительных интервалов.
+
+\end{document}
