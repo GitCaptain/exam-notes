@@ -10,6 +10,24 @@
 \textbf{Случайная величина} (с.в.) — это функция $X: \Omega \to \mathbb{R}$, определённая на пространстве элементарных исходов $\Omega$. Для каждого вещественного числа $x$ множество $\{\omega: X(\omega) \le x\}$ должно быть событием (т.е. иметь вероятность). Это условие называется измеримостью и гарантирует, что можно говорить о вероятностях вида $\Pr(X \le x)$.
 \end{definition}
 
+\begin{definition}
+На множестве $\Omega$ элементарных исходов задано множество его подмножеств $\Sigma$ (сигма-алгебра событий), такое что:
+\begin{enumerate}
+    \item $\varnothing \in \Sigma$;
+    \item $A \in \Sigma \Rightarrow \bar{A} \in \Sigma$;
+    \item $\{A_1, \dots, A_n, \dots\} \in \Sigma \Rightarrow \bigcap_{i\in \mathbb{N}} A_i \in \Sigma$ и $\bigcup_{i \in \mathbb{N}} A_i \in \Sigma$.
+\end{enumerate}
+Вероятностная мера $\Pr$~--- это функция, заданная на $\Omega$, со
+следующими свойствами:
+\begin{enumerate}
+\item Неотрицательность: $\Pr(A) \geq 0$ для любого события $A$;
+\item Нормализация: $\Pr(\Omega) = 1$;
+\item Счетная аддитивнотсь: $A_1, \dots, A_n, \dots$~--- последовательность
+попарно непересекающихся событий, тогда $$
+\Pr(\bigcup_{i\in \mathbb{N}} A_i) = \sum_{i\in \mathbb{N}}\Pr(A_i)\text{.}$$
+\end{enumerate}
+\end{definition}
+
 \subsection{Дискретные случайные величины}
 Случайная величина называется \textbf{дискретной}, если множество её возможных значений конечно или счётно.
 
@@ -76,6 +94,45 @@
     \item \textbf{Линейность:} $E[aX + bY] = aE[X] + bE[Y]$ для любых констант $a, b$.
 \end{enumerate}
 
+\begin{definition}
+\textbf{Дисперсия} — мера разброса: $$\operatorname{Var}(X) = E[(X - E[X])^2] = E[X^2] - (E[X])^2\text{.}$$
+\end{definition}
+Свойства: $\operatorname{Var}(aX + b) = a^2 \operatorname{Var}(X)$.
+
+\begin{remark}
+Для случайного вектора $\mathbf{X} = (X_1, \dots, X_n)^T$ вводят \textbf{ковариационную матрицу}:
+\[
+\Sigma = \operatorname{Cov}(\mathbf{X}) = E[(\mathbf{X} - E[\mathbf{X}])(\mathbf{X} - E[\mathbf{X}])^T].
+\]
+Её элементы: $\Sigma_{ij} = \operatorname{Cov}(X_i, X_j) = E[(X_i - E[X_i])(X_j - E[X_j])]$.
+Свойства:
+\begin{itemize}
+    \item $\Sigma$ — симметричная, неотрицательно определённая матрица.
+    \item $\operatorname{Var}(X_i) = \Sigma_{ii}$.
+    \item Для линейного преобразования $\mathbf{Y} = A\mathbf{X} + \mathbf{b}$ (где $A$ — матрица, $\mathbf{b}$ — вектор) выполняется:
+    \[
+    E[\mathbf{Y}] = A E[\mathbf{X}] + \mathbf{b}, \qquad \operatorname{Cov}(\mathbf{Y}) = A \Sigma A^T.
+    \]
+\end{itemize}
+    
+\end{remark}
+
+\subsection{Независимость случайных величин}
+\begin{definition}
+Случайные величины $X_1, \dots, X_n$ (дискретные или непрерывные) называются \textbf{независимыми}, если для любых чисел $x_1, \dots, x_n$ выполняется:
+\[
+\Pr(X_1 \le x_1, \dots, X_n \le x_n) = \Pr(X_1 \le x_1) \cdots \Pr(X_n \le x_n).
+\]
+Для дискретных с.в. это эквивалентно $p_{\mathbf{X}}(\mathbf{x}) = p_{X_1}(x_1) \cdots p_{X_n}(x_n)$; для непрерывных — $f_{\mathbf{X}}(\mathbf{x}) = f_{X_1}(x_1) \cdots f_{X_n}(x_n)$.
+\end{definition}
+
+\textbf{Следствия независимости:}
+\begin{itemize}
+    \item $E[X_1 X_2] = E[X_1]E[X_2]$,
+    \item $\operatorname{Var}(X_1 + X_2) = \operatorname{Var}(X_1) + \operatorname{Var}(X_2)$,
+    \item любые функции от непересекающихся наборов независимых с.в. также независимы.
+\end{itemize}
+
 \subsection*{Математическое ожидание произведения независимых случайных величин}
 \begin{theorem}
 Если $X$ и $Y$ — независимые случайные величины, то
@@ -95,11 +152,6 @@ E[XY] &= \iint xy\, f_{X,Y}(x,y)\,dx\,dy = \iint xy\, f_X(x)f_Y(y)\,dx\,dy \\
 &= \left(\int x f_X(x)\,dx\right)\left(\int y f_Y(y)\,dy\right) = E[X]E[Y].
 \end{align*}
 \end{proof}
-
-\begin{definition}
-\textbf{Дисперсия} — мера разброса: $\operatorname{Var}(X) = E[(X - E[X])^2] = E[X^2] - (E[X])^2$.
-\end{definition}
-Свойства: $\operatorname{Var}(aX + b) = a^2 \operatorname{Var}(X)$.
 
 \subsection*{Дисперсия суммы независимых случайных величин}
 \begin{theorem}
@@ -127,38 +179,6 @@ E[(X-\mu_X)(Y-\mu_Y)] = E[X-\mu_X] \cdot E[Y-\mu_Y] = 0 \cdot 0 = 0.
 \[
 \operatorname{Var}\left(\sum_{i=1}^n X_i\right) = \sum_{i=1}^n \operatorname{Var}(X_i).
 \]
-
-\subsection{Дисперсия случайного вектора}
-Для случайного вектора $\mathbf{X} = (X_1, \dots, X_n)^T$ вводят \textbf{ковариационную матрицу}:
-\[
-\Sigma = \operatorname{Cov}(\mathbf{X}) = E[(\mathbf{X} - E[\mathbf{X}])(\mathbf{X} - E[\mathbf{X}])^T].
-\]
-Её элементы: $\Sigma_{ij} = \operatorname{Cov}(X_i, X_j) = E[(X_i - E[X_i])(X_j - E[X_j])]$.
-Свойства:
-\begin{itemize}
-    \item $\Sigma$ — симметричная, неотрицательно определённая матрица.
-    \item $\operatorname{Var}(X_i) = \Sigma_{ii}$.
-    \item Для линейного преобразования $\mathbf{Y} = A\mathbf{X} + \mathbf{b}$ (где $A$ — матрица, $\mathbf{b}$ — вектор) выполняется:
-    \[
-    E[\mathbf{Y}] = A E[\mathbf{X}] + \mathbf{b}, \qquad \operatorname{Cov}(\mathbf{Y}) = A \Sigma A^T.
-    \]
-\end{itemize}
-
-\subsection{Независимость случайных величин}
-\begin{definition}
-Случайные величины $X_1, \dots, X_n$ (дискретные или непрерывные) называются \textbf{независимыми}, если для любых чисел $x_1, \dots, x_n$ выполняется:
-\[
-\Pr(X_1 \le x_1, \dots, X_n \le x_n) = \Pr(X_1 \le x_1) \cdots \Pr(X_n \le x_n).
-\]
-Для дискретных с.в. это эквивалентно $p_{\mathbf{X}}(\mathbf{x}) = p_{X_1}(x_1) \cdots p_{X_n}(x_n)$; для непрерывных — $f_{\mathbf{X}}(\mathbf{x}) = f_{X_1}(x_1) \cdots f_{X_n}(x_n)$.
-\end{definition}
-
-\textbf{Следствия независимости:}
-\begin{itemize}
-    \item $E[X_1 X_2] = E[X_1]E[X_2]$,
-    \item $\operatorname{Var}(X_1 + X_2) = \operatorname{Var}(X_1) + \operatorname{Var}(X_2)$,
-    \item любые функции от непересекающихся наборов независимых с.в. также независимы.
-\end{itemize}
 
 \section{Основные непрерывные распределения}
 
@@ -241,7 +261,7 @@ F_{k_1, k_2} = \frac{\chi^2_{k_1} / k_1}{\chi^2_{k_2} / k_2}
 
 \subsection*{Примеры использования в проверке гипотез}
 \begin{itemize}
-    \item \textbf{$\chi^2$-критерий:} проверка согласия (соответствия эмпирического распределения теоретическому) или независимости признаков в таблице сопряжённости. Статистика имеет асимптотическое распределение $\chi^2$ с соответствующим числом степеней свободы.
+    \item \textbf{$\chi^2$-критерий:} проверка согласия (соответствия эмпирического распределения теоретическому) или независимости признаков в таблице сопряжённости. Статистика имеет асимптотическое распределение $\chi^2$ с соответствующим числом степеней свободы (например, для независимости признаков~--- $(N_{\operatorname{rows}} - 1) \cdot (N_{\operatorname{columns}} - 1)$).
     \item \textbf{$t$-критерий:} проверка равенства среднего выборки заданному значению (при неизвестной дисперсии) или равенства средних двух независимых выборок. Статистика имеет распределение Стьюдента.
     \item \textbf{$F$-критерий:} сравнение дисперсий двух нормальных выборок; в дисперсионном анализе (ANOVA) — проверка равенства средних нескольких групп. Статистика имеет распределение Фишера.
 \end{itemize}
